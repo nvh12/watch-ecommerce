@@ -1,5 +1,5 @@
 function browse(reg, res) {
-    return 
+    res.send('Browse');
 }
 
 module.exports = {

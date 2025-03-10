@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const connectDB = require('./config/database');
 
-const homeRoutes = require('./routes/homeRoutes');
+const homeRoutes  = require('./routes/homeRoutes');
 const browseRoutes = require('./routes/browseRoutes');
 
 const app = express();
@@ -11,6 +12,8 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+connectDB();
 
 // Register Routes
 app.use('/', homeRoutes);
