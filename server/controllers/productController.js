@@ -1,4 +1,4 @@
-function product(reg, res) {
+function product(req, res) {
     res.send('Product');
 }
 

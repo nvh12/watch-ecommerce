@@ -3,6 +3,6 @@ const { product } = requite('../controllers/productController');
 
 const router = express.Router();
 
-router.get('/product', product);
+router.get('/', product);
 
 module.exports = router;

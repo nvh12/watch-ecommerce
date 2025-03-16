@@ -1,4 +1,4 @@
-function search(reg, res) {
+function search(req, res) {
     res.send('Search');
 }
 
