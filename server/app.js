@@ -4,6 +4,7 @@ const connectDB = require('./config/database');
 
 const homeRoutes  = require('./routes/homeRoutes');
 const browseRoutes = require('./routes/browseRoutes');
+const productRoutes = require('./routes/productRoutes');
 
 const app = express();
 
@@ -18,5 +19,6 @@ connectDB();
 // Register Routes
 app.use('/', homeRoutes);
 app.use('/browse', browseRoutes);
+app.use('/product', productRoutes);
 
 module.exports = app;

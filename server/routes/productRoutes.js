@@ -1,8 +1,8 @@
 const express = require('express');
-const { product } = requite('../controllers/productController');
+const { product } = require('../controllers/productController');
 
 const router = express.Router();
 
-router.get('/', product);
+router.get('/:id', product);
 
 module.exports = router;
