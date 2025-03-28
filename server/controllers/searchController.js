@@ -6,8 +6,18 @@ async function search(req, res) {
         let { search, page = 1, order = 'asc' } = req.query;
         page = parseInt(page);
         const total = await watchModel.countDocuments({ name: new RegExp(search, 'i') });
+        if (total === 0) {
+            return res.status(404).json({
+                status: "error",
+                message: "No watches found matching the criteria"
+            });
+        }
         const watches = await watchServices.getWatchesByName(search, page, 30, order);
-        res.json({ totalPages: Math.ceil(total / 30), page: page, order: order, data: watches, status: 'success' });
+        res.json({ 
+            totalPages: Math.ceil(total / 30), 
+            page: page, order: order, 
+            data: watches || [], 
+            status: 'success' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
