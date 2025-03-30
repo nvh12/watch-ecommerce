@@ -14,12 +14,13 @@ async function browse(req, res) {
             });
         }
         const watches = await watchServices.getWatchesByFilters(filters, page, 30, order);
-        res.json({ 
-            totalPages: Math.ceil(total / 30), 
-            page: page, 
-            order: order, 
-            data: watches || [], 
-            status: 'success' });
+        res.json({
+            totalPages: Math.ceil(total / 30),
+            page: page,
+            order: order,
+            data: watches || [],
+            status: 'success'
+        });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

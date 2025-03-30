@@ -1,33 +1,57 @@
 const Watch = require('../models/watch');
 
 async function getWatchById(id) {
-    return await Watch.findOne({ watch_id: id });
+    try {
+        return await Watch.findOne({ watch_id: id });
+    } catch (error) {
+        throw error;
+    }
 }
 
 async function getWatchesByName(name, page = 1, limit = 30, order) {
-    return await Watch.find({ name: new RegExp(name, 'i') })
-        .skip((page - 1) * limit)
-        .limit(limit);
+    try {
+        return await Watch.find({ name: new RegExp(name, 'i') })
+            .skip((page - 1) * limit)
+            .limit(limit);
+    } catch (error) {
+        throw error;
+    }
 }
 
 async function getWatchesByFilters(filters, page = 1, limit = 30, order = "asc") {
-    return await Watch.find(filters)
-        .sort({ price: order === "asc" ? 1 : -1 })
-        .skip((page - 1) * limit)
-        .limit(limit);
+    try {
+        return await Watch.find(filters)
+            .sort({ price: order === "asc" ? 1 : -1 })
+            .skip((page - 1) * limit)
+            .limit(limit);
+    } catch (error) {
+        throw error;
+    }
 }
 
 async function addWatch(info) {
-    let watch = new Watch({ ...info })
-    await watch.save();
+    try {
+        let watch = new Watch({ ...info })
+        await watch.save();
+    } catch (error) {
+        throw error;
+    }
 }
 
 async function updateWatch(id, updateData) {
-    return await Watch.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+    try {
+        return await Watch.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+    } catch (error) {
+        throw error;
+    }
 }
 
 async function deleteWatch(id) {
-    return await Watch.findByIdAndDelete(id);
+    try {
+        return await Watch.findByIdAndDelete(id);
+    } catch (error) {
+        throw error;
+    }
 }
 
 module.exports = {
