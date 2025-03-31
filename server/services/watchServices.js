@@ -18,10 +18,14 @@ async function getWatchesByName(name, page = 1, limit = 30, order) {
     }
 }
 
-async function getWatchesByFilters(filters, page = 1, limit = 30, order = "asc") {
+async function getWatchesByFilters(filters, page = 1, limit = 30, sortBy = null, order = "asc") {
     try {
+        const sortOption = {};
+        if (sortBy) {
+            sortOption[sortBy] = order === 'asc' ? 1 : -1;
+        }
         return await Watch.find(filters)
-            .sort({ price: order === "asc" ? 1 : -1 })
+            .sort(sortOption)
             .skip((page - 1) * limit)
             .limit(limit);
     } catch (error) {

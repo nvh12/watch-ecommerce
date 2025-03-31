@@ -6,7 +6,7 @@ async function browse(req, res) {
         let { page = 1, order = "asc", ...filters } = req.query;
         page = parseInt(page);
         if (Number.isNaN(page) || page < 1) page = 1;
-        let total = await watchModel.countDocuments(filters);
+        const total = await watchModel.countDocuments(filters);
         if (total === 0) {
             return res.status(404).json({
                 status: "error",
@@ -21,8 +21,8 @@ async function browse(req, res) {
             data: watches || [],
             status: 'success'
         });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    } catch (error) {
+        res.status(500).json({ status: 'error', error: error.message || 'Something went wrong' });
     }
 }
 

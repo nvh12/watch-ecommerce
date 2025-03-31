@@ -4,7 +4,7 @@ const Counter = require('./counter');
 const watchSchema = new mongoose.Schema({
     watch_id: { type: Number, required: true, unique: true },
     name: { type: String, required: true },
-    price: { type: mongoose.Schema.Types.Decimal128, required: true },
+    price: { type: Number, required: true },
     brand: { type: String, required: true },
     model: { type: String, required: true },
     ref: { type: String, required: true, unique: true },
@@ -14,7 +14,8 @@ const watchSchema = new mongoose.Schema({
     sex: { type: String, required: true, enum: ['Men', 'Women'] },
     image_url: { type: [String], required: true },
     stock: { type: Number, required: true },
-    sold: { type: Number, required: true }
+    sold: { type: Number, required: true },
+    discount: { type: Number, default: 0}
 }, { timestamps: true });
 
 watchSchema.pre('save', async function(next) {
