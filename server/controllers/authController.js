@@ -38,7 +38,7 @@ async function login(req, res) {
         const refreshToken = generateRefreshToken(user._id);
         res.cookie('accessToken', accessToken, {
             httpOnly: true,
-            secure: false, 
+            secure: false
         })
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
@@ -59,7 +59,7 @@ function refresh(req, res) {
         const accessToken = generateAccessToken(user.id);
         res.cookie('accessToken', accessToken, {
             httpOnly: true,
-            secure: false, 
+            secure: false
         })
         res.status(200).json({ message: 'Token refreshed successfully' });
     } catch (err) {
