@@ -1,11 +1,11 @@
 const watchServices = require('../services/watchServices');
-const watchModel = require('../models/watch');
+const Watch = require('../models/watch');
 
 async function search(req, res) {
     try {
         let { search, page = 1, order = 'asc' } = req.query;
         page = parseInt(page);
-        const total = await watchModel.countDocuments({ name: new RegExp(search, 'i') });
+        const total = await Watch.countDocuments({ name: new RegExp(search, 'i') });
         if (total === 0) {
             return res.status(404).json({
                 status: "error",

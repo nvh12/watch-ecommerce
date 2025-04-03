@@ -9,10 +9,10 @@ function Header() {
             <div className='container mx-auto flex flex-col md:flex-row items-start md:items-center justify-between p-4'>
                 <div className='w-full flex items-center justify-between'>
                     <div className='flex items-center justify-between gap-x-2'>
-                        <button className='p-2 bg-gray-700 hover:bg-blue-500 rounded-full'>
+                        <button to='/' className='p-2 bg-gray-700 hover:bg-blue-500 rounded-full'>
                             <FaBars />
                         </button>
-                        <h1 className='text-2xl font-bold self-start'>WatchStore</h1>
+                        <a className='text-2xl font-bold self-start' href='/'>WatchStore</a>
                     </div>
                     <CartandLoginButtons className='min-md:hidden' />
                 </div>

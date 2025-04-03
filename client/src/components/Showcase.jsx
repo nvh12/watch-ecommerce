@@ -1,7 +1,6 @@
-function Showcase({ title, watches }) {
+function Showcase({ watches }) {
     return (
         <div className="container mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-6">{title}</h1>
             <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-6">
                 {watches.map((watch) => (
                     <div key={watch._id} className="border p-4 shadow-lg rounded-lg text-center flex flex-col justify-between">

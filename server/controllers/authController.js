@@ -19,7 +19,7 @@ async function register(req, res) {
     try {
         const user = new User({ name, email, password });
         await user.save();
-        res.status(201).json({ message: 'User registered successfully' });
+        res.status(201).json({ message: 'User registered successfully!' });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -31,9 +31,9 @@ async function login(req, res) {
         const user = await User.findOne({
             $or: [{ email: identifier }, { name: identifier }]
         });
-        if (!user) return res.status(400).json({ error: "User not found" });
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
+        if (!user) return res.status(400).json({ error: "User not found!" });
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) return res.status(400).json({ error: "Invalid credentials!" });
         const accessToken = generateAccessToken(user._id);
         const refreshToken = generateRefreshToken(user._id);
         res.cookie('accessToken', accessToken, {
@@ -45,7 +45,7 @@ async function login(req, res) {
             secure: false,
             maxAge: 60 * 60 * 1000
         })
-        res.status(200).json({ message: 'Login successful' });
+        res.status(200).json({ message: 'Login successful!' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
