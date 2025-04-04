@@ -8,6 +8,8 @@ const browseRoutes = require('./routes/browseRoutes');
 const productRoutes = require('./routes/productRoutes');
 const searchRoutes = require('./routes/searchRoutes');
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
@@ -27,5 +29,7 @@ app.use('/browse', browseRoutes);
 app.use('/product', productRoutes);
 app.use('/search', searchRoutes);
 app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
+app.use('/admin', adminRoutes);
 
 module.exports = app;

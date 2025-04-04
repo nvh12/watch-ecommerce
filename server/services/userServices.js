@@ -2,7 +2,10 @@ const User = require('../models/user');
 
 async function getUserById(id) {
     try {
-        return await User.findOne({ user_id: id });
+        const userObject = await User.findOne({ user_id: id });
+        if (!userObject) return null;
+        const { password: _, ...user } = userObject.toObject();
+        return user;
     } catch (error) {
         throw error;
     }
