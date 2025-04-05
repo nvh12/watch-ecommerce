@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import Showcase from '../components/Showcase'
 
 function Browse() {
@@ -82,12 +82,12 @@ function Browse() {
     }
 
     return (
-        <div className="flex flex-col justify-between items-center">
-            <div className="flex flex-row justify-between items-center">
+        <div className='flex flex-col justify-between items-center'>
+            <div className='flex flex-row justify-between items-center'>
                 <div>
                     <label>Brand:</label>
-                    <select name="brand" onChange={changeFilter} defaultValue="">
-                        <option value="">All brands</option>
+                    <select name='brand' onChange={changeFilter} defaultValue=''>
+                        <option value=''>All brands</option>
                         {filters.brands.map((brand) => (
                             <option key={brand} value={brand}>{brand}</option>
                         ))}
@@ -95,8 +95,8 @@ function Browse() {
                 </div>
                 <div>
                     <label>Movement type:</label>
-                    <select name="mvmt" onChange={changeFilter} defaultValue="">
-                        <option value="">All movement types</option>
+                    <select name='mvmt' onChange={changeFilter} defaultValue=''>
+                        <option value=''>All movement types</option>
                         {filters.movements.map((movement) => (
                             <option key={movement} value={movement}>{movement}</option>
                         ))}
@@ -104,8 +104,8 @@ function Browse() {
                 </div>
                 <div>
                     <label>Case material:</label>
-                    <select name="casem" onChange={changeFilter} defaultValue="">
-                        <option value="">All materials</option>
+                    <select name='casem' onChange={changeFilter} defaultValue=''>
+                        <option value=''>All materials</option>
                         {filters.caseMaterials.map((brand) => (
                             <option key={brand} value={brand}>{brand}</option>
                         ))}
@@ -113,8 +113,8 @@ function Browse() {
                 </div>
                 <div>
                     <label>Brace material:</label>
-                    <select name="bracem" onChange={changeFilter} defaultValue="">
-                        <option value="">All materials</option>
+                    <select name='bracem' onChange={changeFilter} defaultValue=''>
+                        <option value=''>All materials</option>
                         {filters.braceletMaterials.map((braceletMaterial) => (
                             <option key={braceletMaterial} value={braceletMaterial}>{braceletMaterial}</option>
                         ))}
@@ -122,33 +122,33 @@ function Browse() {
                 </div>
                 <div>
                     <label>Sex:</label>
-                    <select name="sex" onChange={changeFilter} defaultValue="">
-                        <option value="">All</option>
-                        <option value="Men">Men</option>
-                        <option value="Women">Women</option>
+                    <select name='sex' onChange={changeFilter} defaultValue=''>
+                        <option value=''>All</option>
+                        <option value='Men'>Men</option>
+                        <option value='Women'>Women</option>
                     </select>
                 </div>
                 <div>
                     <label>Sort By:</label>
-                    <select onChange={changeSort} defaultValue="">
-                        <option value="">None</option>
-                        <option value="sold">Number sold</option>
-                        <option value="price">Price</option>
-                        <option value="createdAt">Date added</option>
+                    <select onChange={changeSort} defaultValue=''>
+                        <option value=''>None</option>
+                        <option value='sold'>Number sold</option>
+                        <option value='price'>Price</option>
+                        <option value='createdAt'>Date added</option>
                     </select>
                 </div>
                 <div>
                     <label>Order:</label>
-                    <select onChange={changeOrder} defaultValue="asc">
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
+                    <select onChange={changeOrder} defaultValue='asc'>
+                        <option value='asc'>Ascending</option>
+                        <option value='desc'>Descending</option>
                     </select>
                 </div>
             </div>
             <Showcase
                 title=''
                 watches={watches} />
-            <div className="text-center mt-4">
+            <div className='text-center mt-4'>
                 <button
                     disabled={currentPage <= 1}
                     onClick={() => changePage(currentPage - 1)}
