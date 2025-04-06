@@ -5,11 +5,10 @@ function Home() {
     const [latest, setLatest] = useState([]);
     const [bestseller, setBestseller] = useState([]);
     const [all, setAll] = useState([]);
-    const [status, setStatus] = useState('');
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
     useEffect(() => {
-        fetch(apiUrl || 'http://localhost:5001')
+        fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {

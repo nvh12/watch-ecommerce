@@ -6,5 +6,5 @@ const router = express.Router();
 
 router.use(verifyUser);
 
-router.get('/:id', user);
+router.get('/', user);
 module.exports = router;
