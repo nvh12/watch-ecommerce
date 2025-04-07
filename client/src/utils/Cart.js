@@ -5,7 +5,12 @@ export default class Cart {
     }
 
     addItem(item) {
-        this.items.push(item);
+        const inCart = this.items.find(item => item.id === product.id);
+        if (inCart) {
+            inCart.quantity++;
+        } else {
+            this.items.push({...item, quantity: 1});
+        }
         this.save();
     }
 

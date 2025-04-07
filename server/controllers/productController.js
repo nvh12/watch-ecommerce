@@ -5,7 +5,7 @@ async function product(req, res) {
         let { id } = req.params;
         let watch_id = parseInt(id);
         const watch = await watchServices.getWatchById(watch_id);
-        res.json({ data: watch, status: 'success' });
+        res.json({ watch: watch, status: 'success' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
