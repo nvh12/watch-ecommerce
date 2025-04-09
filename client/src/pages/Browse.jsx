@@ -4,11 +4,11 @@ import Showcase from '../components/Showcase'
 function Browse() {
     const [watches, setWatches] = useState([]);
     const [filters, setFilters] = useState({
-        brands: [],
-        movements: [],
-        caseMaterials: [],
-        braceletMaterials: [],
-        sexes: []
+        brand: [],
+        movement: [],
+        caseMaterial: [],
+        braceletMaterial: [],
+        sex: []
     });
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
@@ -88,7 +88,7 @@ function Browse() {
                     <label>Brand:</label>
                     <select name='brand' onChange={changeFilter} defaultValue=''>
                         <option value=''>All brands</option>
-                        {filters.brands.map((brand) => (
+                        {filters.brand.map((brand) => (
                             <option key={brand} value={brand}>{brand}</option>
                         ))}
                     </select>
@@ -97,7 +97,7 @@ function Browse() {
                     <label>Movement type:</label>
                     <select name='mvmt' onChange={changeFilter} defaultValue=''>
                         <option value=''>All movement types</option>
-                        {filters.movements.map((movement) => (
+                        {filters.movement.map((movement) => (
                             <option key={movement} value={movement}>{movement}</option>
                         ))}
                     </select>
@@ -106,8 +106,8 @@ function Browse() {
                     <label>Case material:</label>
                     <select name='casem' onChange={changeFilter} defaultValue=''>
                         <option value=''>All materials</option>
-                        {filters.caseMaterials.map((brand) => (
-                            <option key={brand} value={brand}>{brand}</option>
+                        {filters.caseMaterial.map((caseMaterial) => (
+                            <option key={caseMaterial} value={caseMaterial}>{caseMaterial}</option>
                         ))}
                     </select>
                 </div>
@@ -115,7 +115,7 @@ function Browse() {
                     <label>Brace material:</label>
                     <select name='bracem' onChange={changeFilter} defaultValue=''>
                         <option value=''>All materials</option>
-                        {filters.braceletMaterials.map((braceletMaterial) => (
+                        {filters.braceletMaterial.map((braceletMaterial) => (
                             <option key={braceletMaterial} value={braceletMaterial}>{braceletMaterial}</option>
                         ))}
                     </select>

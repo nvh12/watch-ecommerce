@@ -11,7 +11,7 @@ function Product() {
     const addToCart = () => {
         if (watch) {
             const cart = new Cart();
-            cart.addItem({ id: watch.id, price: watch.price });
+            cart.addItem({ id: watch._id, price: watch.price });
         }
     }
 

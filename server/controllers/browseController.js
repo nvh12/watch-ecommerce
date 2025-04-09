@@ -3,14 +3,14 @@ const Watch = require('../models/watch')
 
 async function filter(req, res) {
     try {
-        const brands = await Watch.distinct('brand');
-        const movements = await Watch.distinct('mvmt');
-        const caseMaterials = await Watch.distinct('casem');
-        const braceletMaterials = await Watch.distinct('bracem');
-        const sexes = await Watch.distinct('sex');
+        const brand = await Watch.distinct('brand');
+        const movement = await Watch.distinct('mvmt');
+        const caseMaterial = await Watch.distinct('casem');
+        const braceletMaterial = await Watch.distinct('bracem');
+        const sex = await Watch.distinct('sex');
         res.json({
             status: 'success',
-            data: { brands, movements, caseMaterials, braceletMaterials, sexes }
+            data: { brand, movement, caseMaterial, braceletMaterial, sex }
         });
     } catch (error) {
         res.status(500).json({ status: 'error', message: 'Failed to fetch filters' });
