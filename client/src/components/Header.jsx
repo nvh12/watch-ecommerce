@@ -11,6 +11,7 @@ function Header() {
         braceletMaterials: [],
         sexes: []
     });
+    const [search, setSearch] = useState('');
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
     const fetchFilter = () => {
@@ -43,17 +44,29 @@ function Header() {
                         </div>
                         <CartandLoginButtons className='min-md:hidden' />
                     </div>
-                    <div className='mt-4 md:mt-0 w-full md:w-auto flex flex-col md:flex-row items-center'>
-                        <div className='mt-2 md:mt-0 w-full md:w-auto flex items-center bg-gray-200 text-gray-800 rounded-3xl px-2'>
+                    <div className='mt-4 md:mt-0 w-full md:w-auto flex flex-col md:flex-row items-center gap-2'>
+                        <form
+                            onSubmit={(event) => {
+                                event.preventDefault();
+                                if (search.trim()) {
+                                    window.location.href = `/search?search=${encodeURIComponent(search.trim())}`;
+                                }
+                            }}
+                            className='mt-2 md:mt-0 w-full md:w-auto flex items-center bg-gray-200 text-gray-800 rounded-3xl px-2'>
                             <input
                                 type='text'
+                                value={search}
+                                onChange={(event) => setSearch(event.target.value)}
                                 placeholder='Search watches...'
                                 className='p-2 outline-none bg-transparent'
                             />
-                            <button className='p-2 ml-auto hover:bg-gray-300 rounded-full'>
+                            <button
+                                type='submit'
+                                className='p-2 ml-auto hover:bg-gray-300 rounded-full'
+                            >
                                 <FaMagnifyingGlass />
                             </button>
-                        </div>
+                        </form>
                         <CartandLoginButtons className='hidden md:flex' />
                     </div>
                 </div>

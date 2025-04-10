@@ -50,7 +50,7 @@ function Register() {
     };
 
     return (
-        <div className='flex justify-center items-center bg-gray-100'>
+        <div className='flex justify-center items-center'>
             <form onSubmit={handleSubmit} className='bg-white shadow-lg rounded-2xl p-8 w-96 space-y-6'>
                 {['email', 'username', 'password', 'password2'].map((field, index) => (
                     <div key={index}>
@@ -119,7 +119,7 @@ function Login() {
     };
 
     return (
-        <div className='flex justify-center items-center bg-gray-100'>
+        <div className='flex justify-center items-center'>
             <form onSubmit={handleSubmit} className='bg-white shadow-lg rounded-2xl p-8 w-96 space-y-6'>
                 <div>
                     <label htmlFor='identifier' className='block text-sm font-medium text-gray-700 mb-1'>Email or Username:</label>

@@ -12,9 +12,10 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/browse' element={<Browse />} />
+          <Route path='/search' element={<Browse />} />
+          <Route path='/product/:id' element={<Product />} />
           <Route path='/authen/login' element={<Login />} />
           <Route path='/authen/register' element={<Register />} />
-          <Route path='/product/:id' element={<Product />} />
         </Routes>
       </Layout>
     </BrowserRouter>

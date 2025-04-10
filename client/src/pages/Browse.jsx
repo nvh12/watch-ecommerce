@@ -12,7 +12,6 @@ function Browse() {
     });
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
-
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
     const fetchFilter = () => {
@@ -29,8 +28,8 @@ function Browse() {
     const fetchData = () => {
         let params = new URLSearchParams(window.location.search);
         let queryParams = params.toString();
-        console.log(`${apiUrl}/browse?${queryParams}`);
-        fetch(`${apiUrl}/browse?${queryParams}`)
+        let route = params.has('search') ? 'search' : 'browse';
+        fetch(`${apiUrl}/${route}?${queryParams}`)
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
@@ -82,55 +81,41 @@ function Browse() {
     }
 
     return (
-        <div className='flex flex-col justify-between items-center'>
-            <div className='flex flex-row justify-between items-center'>
+        <div className='flex flex-col justify-between items-center my-5'>
+            <div className='flex flex-wrap justify-between gap-4 w-full max-w-6xl'>
+                {[
+                    { label: 'Brand', name: 'brand', options: filters.brand },
+                    { label: 'Movement type', name: 'mvmt', options: filters.movement },
+                    { label: 'Case material', name: 'casem', options: filters.caseMaterial },
+                    { label: 'Brace material', name: 'bracem', options: filters.braceletMaterial }
+                ].map(({ label, name, options }) => (
+                    <div key={name}>
+                        <label>{label}: </label>
+                        <select name={name} onChange={changeFilter} defaultValue=''
+                            className='p-2 bg-slate-100 border border-gray-300 focus:bg-slate-200 rounded-xl w-40'
+                        >
+                            <option value=''>All {label.toLowerCase()}s</option>
+                            {options.map((option) => (
+                                <option key={option} value={option}>{option}</option>
+                            ))}
+                        </select>
+                    </div>
+                ))}
                 <div>
-                    <label>Brand:</label>
-                    <select name='brand' onChange={changeFilter} defaultValue=''>
-                        <option value=''>All brands</option>
-                        {filters.brand.map((brand) => (
-                            <option key={brand} value={brand}>{brand}</option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label>Movement type:</label>
-                    <select name='mvmt' onChange={changeFilter} defaultValue=''>
-                        <option value=''>All movement types</option>
-                        {filters.movement.map((movement) => (
-                            <option key={movement} value={movement}>{movement}</option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label>Case material:</label>
-                    <select name='casem' onChange={changeFilter} defaultValue=''>
-                        <option value=''>All materials</option>
-                        {filters.caseMaterial.map((caseMaterial) => (
-                            <option key={caseMaterial} value={caseMaterial}>{caseMaterial}</option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label>Brace material:</label>
-                    <select name='bracem' onChange={changeFilter} defaultValue=''>
-                        <option value=''>All materials</option>
-                        {filters.braceletMaterial.map((braceletMaterial) => (
-                            <option key={braceletMaterial} value={braceletMaterial}>{braceletMaterial}</option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label>Sex:</label>
-                    <select name='sex' onChange={changeFilter} defaultValue=''>
+                    <label>Sex: </label>
+                    <select name='sex' onChange={changeFilter} defaultValue=''
+                        className='p-2 bg-slate-100 border border-gray-300 focus:bg-slate-200 rounded-xl w-40'
+                    >
                         <option value=''>All</option>
                         <option value='Men'>Men</option>
                         <option value='Women'>Women</option>
                     </select>
                 </div>
                 <div>
-                    <label>Sort By:</label>
-                    <select onChange={changeSort} defaultValue=''>
+                    <label>Sort By: </label>
+                    <select onChange={changeSort} defaultValue=''
+                        className='p-2 bg-slate-100 border border-gray-300 focus:bg-slate-200 rounded-xl w-40'
+                    >
                         <option value=''>None</option>
                         <option value='sold'>Number sold</option>
                         <option value='price'>Price</option>
@@ -138,8 +123,10 @@ function Browse() {
                     </select>
                 </div>
                 <div>
-                    <label>Order:</label>
-                    <select onChange={changeOrder} defaultValue='asc'>
+                    <label>Order: </label>
+                    <select onChange={changeOrder} defaultValue='asc'
+                        className='p-2 bg-slate-100 border border-gray-300 focus:bg-slate-200 rounded-xl w-40'
+                    >
                         <option value='asc'>Ascending</option>
                         <option value='desc'>Descending</option>
                     </select>

@@ -7,7 +7,7 @@ function Showcase({ watches }) {
             <div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-6'>
                 {watches.map((watch) => (
                     <div key={watch.watch_id}
-                        className='border p-4 shadow-lg rounded-lg text-center flex flex-col justify-between'>
+                        className='p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] rounded-xl text-center flex flex-col justify-between'>
                         <div>
                             <img src={watch.image_url[0]} alt={watch.name}
                                 className='w-full h-48 object-cover rounded-md' />
