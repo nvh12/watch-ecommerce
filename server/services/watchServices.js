@@ -36,7 +36,7 @@ async function getWatchesByFilters(filters, page = 1, limit = 30, sortBy = null,
 async function addWatch(info) {
     try {
         let watch = new Watch({ ...info })
-        await watch.save();
+        return await watch.save();
     } catch (error) {
         throw error;
     }

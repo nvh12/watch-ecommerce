@@ -79,12 +79,12 @@ function Header() {
                 <div>
                     <button
                         onClick={() => setMenuOpen(false)}
-                        className="absolute top-4 right-4 text-white hover:text-gray-300 text-xl"
+                        className='absolute top-4 right-4 text-white hover:text-gray-300 text-xl'
                     >
                         <FaXmark />
                     </button>
                 </div>
-                <div className="p-4 overflow-y-auto h-full">
+                <div className='p-4 overflow-y-auto h-full'>
                     {Object.entries(filters).map(([key, values]) => (
                         <div key={key} className='mb-4'>
                             <p
@@ -112,7 +112,7 @@ function Header() {
                                         <a
                                             key={value}
                                             href={`/browse?${queryKey}=${value}`}
-                                            className="text-white pl-2 hover:text-gray-300 transition"
+                                            className='text-white pl-2 hover:text-gray-300 transition'
                                         >
                                             {value}
                                         </a>
