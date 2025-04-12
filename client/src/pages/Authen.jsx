@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useCart } from '../contexts/CartContext';
 
 function Register() {
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
@@ -84,6 +85,7 @@ function Login() {
     });
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { cart, clearCart } = useCart();
 
     const handleChange = (event) => {
         setFormData({
@@ -99,11 +101,16 @@ function Login() {
             const response = await fetch(`${apiUrl}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    ...formData,
+                    guestCart: cart
+                })
             });
             const result = await response.json();
             if (response.ok) {
                 alert(result.message);
+                clearCart();
+                localStorage.removeItem('cart');
                 navigate('/');
             } else {
                 alert('Cannot send form');

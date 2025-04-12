@@ -2,6 +2,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const cartServices = require('../services/cartServices');
 
 const ACCESS_SECRET = process.env.JWT_SECRET;
 const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
@@ -27,7 +28,7 @@ async function register(req, res) {
 
 async function login(req, res) {
     try {
-        const { identifier, password } = req.body;
+        const { identifier, password, guestCart } = req.body;
         const user = await User.findOne({
             $or: [{ email: identifier }, { name: identifier }]
         });
@@ -45,6 +46,13 @@ async function login(req, res) {
             secure: false,
             maxAge: 60 * 60 * 1000
         })
+        const cart = await cartServices.getCart(user._id);
+        if (cart) {
+            await cartServices.clearCart(user._id);
+        }
+        for (const item of guestCart) {
+            await cartServices.addItem(item, user._id);
+        }
         res.status(200).json({ message: 'Login successful!' });
     } catch (err) {
         res.status(500).json({ error: err.message });
