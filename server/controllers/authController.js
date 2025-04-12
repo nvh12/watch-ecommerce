@@ -28,7 +28,7 @@ async function register(req, res) {
 
 async function login(req, res) {
     try {
-        const { identifier, password, guestCart } = req.body;
+        const { identifier, password, guestCart = [] } = req.body;
         const user = await User.findOne({
             $or: [{ email: identifier }, { name: identifier }]
         });
@@ -47,11 +47,13 @@ async function login(req, res) {
             maxAge: 60 * 60 * 1000
         })
         const cart = await cartServices.getCart(user._id);
-        if (cart) {
-            await cartServices.clearCart(user._id);
-        }
-        for (const item of guestCart) {
-            await cartServices.addItem(item, user._id);
+        if (Array.isArray(guestCart) && guestCart.length > 0) {
+            if (cart) {
+                await cartServices.clearCart(user._id);
+            }
+            for (const item of guestCart) {
+                await cartServices.addItem(item, user._id);
+            }
         }
         res.status(200).json({ message: 'Login successful!' });
     } catch (err) {
