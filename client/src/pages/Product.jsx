@@ -29,7 +29,7 @@ function Product() {
     }
     return (
         <div className='max-w-5xl mx-auto p-6'>
-            <div className='flex flex-col md:flex-row gap-6 bg-white shadow-md p-6'>
+            <div className='flex flex-col md:flex-row gap-10 bg-white shadow-md p-6 items-center'>
                 <ImageGallery imageURLs={watch.image_url} name={watch.name} />
                 <div className='flex flex-col gap-2'>
                     <h1 className='text-2xl font-semibold'>{watch.name}</h1>

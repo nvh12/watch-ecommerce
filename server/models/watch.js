@@ -15,10 +15,11 @@ const watchSchema = new mongoose.Schema({
     image_url: { type: [String], required: true },
     stock: { type: Number, required: true },
     sold: { type: Number, required: true },
-    discount: { type: Number, default: 0}
+    discount: { type: Number, default: 0 },
+    description: { type: String, default: 'Description' }
 }, { timestamps: true });
 
-watchSchema.pre('save', async function(next) {
+watchSchema.pre('save', async function (next) {
     if (!this.isNew) return next();
     try {
         const counter = await Counter.findOneAndUpdate(

@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../contexts/CartContext';
+import { useAuth } from '../contexts/AuthContext';
 
 function Register() {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
     const [formData, setFormData] = useState({
         email: '',
         username: '',
@@ -12,6 +11,7 @@ function Register() {
     });
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { register } = useAuth();
 
     const handleChange = (event) => {
         setFormData({
@@ -26,20 +26,14 @@ function Register() {
             alert('Passwords do not match!');
             return;
         }
+        if (!formData.email || !formData.username || !formData.password || !formData.password2) {
+            alert('Please fill in all fields.');
+            return;
+        }
         try {
             setLoading(true);
-            const response = await fetch(`${apiUrl}/auth/register`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
-            const result = await response.json();
-            if (response.ok) {
-                alert(result.message);
-                navigate('/');
-            } else {
-                alert('Cannot send form');
-            }
+            await register(formData);
+            navigate('/');
         }
         catch (error) {
             console.error('Error:', error);
@@ -51,8 +45,9 @@ function Register() {
     };
 
     return (
-        <div className='flex justify-center items-center'>
+        <div className='flex justify-center items-center py-10'>
             <form onSubmit={handleSubmit} className='bg-white shadow-lg rounded-2xl p-8 w-96 space-y-6'>
+                <h2 className='text-2xl font-bold text-center'>Create a new account</h2>
                 {['email', 'username', 'password', 'password2'].map((field, index) => (
                     <div key={index}>
                         <label htmlFor={field} className='block text-sm font-medium text-gray-700 mb-1'>
@@ -78,14 +73,13 @@ function Register() {
 }
 
 function Login() {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
     const [formData, setFormData] = useState({
         identifier: '',
         password: ''
     });
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const { cart, clearCart } = useCart();
+    const { login } = useAuth();
 
     const handleChange = (event) => {
         setFormData({
@@ -96,25 +90,14 @@ function Login() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!formData.identifier || !formData.password) {
+            alert('Please fill in all fields.');
+            return;
+        }
         try {
             setLoading(true);
-            const response = await fetch(`${apiUrl}/auth/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...formData,
-                    guestCart: cart
-                })
-            });
-            const result = await response.json();
-            if (response.ok) {
-                alert(result.message);
-                clearCart();
-                localStorage.removeItem('cart');
-                navigate('/');
-            } else {
-                alert('Cannot send form');
-            }
+            await login(formData);
+            navigate('/');
         }
         catch (error) {
             console.error('Error:', error);
@@ -126,8 +109,9 @@ function Login() {
     };
 
     return (
-        <div className='flex justify-center items-center'>
+        <div className='flex justify-center items-center py-10'>
             <form onSubmit={handleSubmit} className='bg-white shadow-lg rounded-2xl p-8 w-96 space-y-6'>
+                <h2 className='text-2xl font-bold text-center'>Log in</h2>
                 <div>
                     <label htmlFor='identifier' className='block text-sm font-medium text-gray-700 mb-1'>Email or Username:</label>
                     <input type='text' id='identifier' name='identifier' value={formData.identifier} onChange={handleChange}

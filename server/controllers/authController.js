@@ -55,7 +55,15 @@ async function login(req, res) {
                 await cartServices.addItem(item, user._id);
             }
         }
-        res.status(200).json({ message: 'Login successful!' });
+        res.status(200).json({
+            message: 'Login successful!',
+            curUser: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            }
+        });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -71,9 +79,15 @@ function refresh(req, res) {
             httpOnly: true,
             secure: false
         })
-        res.status(200).json({ message: 'Token refreshed successfully' });
+        res.status(200).json({
+            refreshed: true,
+            message: 'Token refreshed successfully'
+        });
     } catch (err) {
-        res.status(403).json({ message: 'Invalid or expired refresh token' });
+        res.status(403).json({
+            refreshed: false,
+            message: 'Invalid or expired refresh token'
+        });
     }
 };
 
@@ -83,9 +97,31 @@ function logout(req, res) {
     res.status(200).json({ message: 'Logged out successfully' });
 };
 
+async function status(req, res) {
+    const token = req.cookies.accessToken;
+    if (!token) return res.status(200).json({ authenticated: false });
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id);
+        if (!user) res.status(200).json({ authenticated: false });
+        return res.status(200).json({
+            authenticated: true,
+            curUser: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            }
+        });
+    } catch (error) {
+        return res.status(200).json({ authenticated: false });
+    }
+}
+
 module.exports = {
     register,
     login,
     refresh,
-    logout
+    logout,
+    status
 };
