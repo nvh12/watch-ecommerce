@@ -49,7 +49,7 @@ function CartandLoginButtons({ className = '' }) {
                                     onClick={() => handleNavigate('/user')}
                                     className='w-full text-left px-4 py-2 hover:bg-gray-100'
                                 >
-                                    user.name
+                                    {user.name}
                                 </button>
                                 <button
                                     onClick={() => {

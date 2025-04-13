@@ -32,9 +32,9 @@ async function login(req, res) {
         const user = await User.findOne({
             $or: [{ email: identifier }, { name: identifier }]
         });
-        if (!user) return res.status(400).json({ error: "User not found!" });
+        if (!user) return res.status(400).json({ message: "User not found!" });
         const isMatch = await user.comparePassword(password);
-        if (!isMatch) return res.status(400).json({ error: "Invalid credentials!" });
+        if (!isMatch) return res.status(400).json({ message: "Invalid credentials!" });
         const accessToken = generateAccessToken(user._id);
         const refreshToken = generateRefreshToken(user._id);
         res.cookie('accessToken', accessToken, {

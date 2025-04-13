@@ -32,7 +32,8 @@ function Register() {
         }
         try {
             setLoading(true);
-            await register(formData);
+            const { username, email, password } = formData;
+            await register({ name: username, email, password });
             navigate('/');
         }
         catch (error) {
@@ -101,7 +102,7 @@ function Login() {
         }
         catch (error) {
             console.error('Error:', error);
-            alert('Failed to submit.');
+            alert(error);
         }
         finally {
             setLoading(false);

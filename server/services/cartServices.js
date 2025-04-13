@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 //userId = objectId != user_id
 async function getCart(userId) {
     try {
-        const userObjectId = mongoose.Types.ObjectId(userId);
+        const userObjectId = new mongoose.Types.ObjectId(`${userId}`);
         return await Cart.findOne({ user: userObjectId });
     } catch (error) {
         throw error;
@@ -13,8 +13,8 @@ async function getCart(userId) {
 
 async function addItem(item, userId) {
     try {
-        const userObjectId = mongoose.Types.ObjectId(userId);
-        const itemId = mongoose.Types.ObjectId(item.id);
+        const userObjectId = new mongoose.Types.ObjectId(`${userId}`);
+        const itemId = new mongoose.Types.ObjectId(`${item.id}`);
         let cart = await Cart.findOne({ user: userObjectId });
         if (!cart) {
             cart = new Cart({ user: userObjectId, items: [], total_price: 0 });
@@ -34,8 +34,8 @@ async function addItem(item, userId) {
 
 async function reduceItem(item, userId) {
     try {
-        const userObjectId = mongoose.Types.ObjectId(userId);
-        const itemId = mongoose.Types.ObjectId(item.id);
+        const userObjectId = new mongoose.Types.ObjectId(`${userId}`);
+        const itemId = new mongoose.Types.ObjectId(`${item.id}`);
         let cart = await Cart.findOne({ user: userObjectId });
         if (!cart) {
             cart = new Cart({ user: userObjectId, items: [], total_price: 0 });
@@ -57,8 +57,8 @@ async function reduceItem(item, userId) {
 
 async function removeItem(item, userId) {
     try {
-        const userObjectId = mongoose.Types.ObjectId(userId);
-        const itemId = mongoose.Types.ObjectId(item.id);
+        const userObjectId = new mongoose.Types.ObjectId(`${userId}`);
+        const itemId = new mongoose.Types.ObjectId(`${item.id}`);
         const cart = await Cart.findOne({ user: userObjectId });
         if (!cart) throw new Error('Cart not found');
         const itemIndex = cart.items.findIndex((it) => it.product.equals(itemId));
@@ -75,7 +75,7 @@ async function removeItem(item, userId) {
 
 async function clearCart(userId) {
     try {
-        const userObjectId = mongoose.Types.ObjectId(userId);
+        const userObjectId = new mongoose.Types.ObjectId(`${userId}`);
         const cart = await Cart.findOne({ user: userObjectId });
         if (!cart) throw new Error('Cart not found');
         return await Cart.findOneAndDelete({ user: userObjectId});

@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 
 const AuthContext = createContext();
@@ -77,7 +76,6 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         clearCart();
         localStorage.removeItem('cart');
-        navigate('/');
         fetch(`${apiUrl}/auth/logout`, {
             method: 'POST',
             credentials: 'include'
