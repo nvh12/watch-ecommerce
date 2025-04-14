@@ -13,7 +13,7 @@ async function search(req, res) {
             });
         }
         const watches = await watchServices.getWatchesByName(search, page, 30, order);
-        res.json({ 
+        res.status(200).json({ 
             totalPages: Math.ceil(total / 30), 
             page: page, order: order, 
             data: watches || [], 

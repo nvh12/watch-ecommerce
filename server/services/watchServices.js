@@ -8,7 +8,7 @@ async function getWatchById(id) {
     }
 }
 
-async function getWatchesByName(name, page = 1, limit = 30, order) {
+async function getWatchesByName(name, page = 1, limit = 30) {
     try {
         return await Watch.find({ name: new RegExp(name, 'i') })
             .skip((page - 1) * limit)
@@ -18,7 +18,7 @@ async function getWatchesByName(name, page = 1, limit = 30, order) {
     }
 }
 
-async function getWatchesByFilters(filters, page = 1, limit = 30, sortBy = null, order = "asc") {
+async function getWatchesByFilters(filters, page = 1, limit = 30, sortBy = null, order = 'asc') {
     try {
         const sortOption = {};
         if (sortBy) {

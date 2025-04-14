@@ -8,7 +8,7 @@ async function filter(req, res) {
         const caseMaterial = await Watch.distinct('casem');
         const braceletMaterial = await Watch.distinct('bracem');
         const sex = await Watch.distinct('sex');
-        res.json({
+        res.status(200).json({
             status: 'success',
             data: { brand, movement, caseMaterial, braceletMaterial, sex }
         });
@@ -33,7 +33,7 @@ async function browse(req, res) {
             });
         }
         const watches = await watchServices.getWatchesByFilters(filters, page, 30, sortBy, order);
-        res.json({
+        res.status(200).json({
             totalPages: Math.ceil(total / 30),
             page: page,
             order: order,

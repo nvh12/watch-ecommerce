@@ -5,7 +5,7 @@ async function home(req, res) {
         const latest = await getWatchesByFilters({}, 1, 10, 'createdAt', 'desc');
         const bestseller = await getWatchesByFilters({}, 1, 10, 'sold', 'desc');
         const all = await getWatchesByFilters({}, 1, 10);
-        res.json({
+        res.status(200).json({
             latest: latest,
             bestseller: bestseller,
             all: all,
