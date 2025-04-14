@@ -31,12 +31,12 @@ function Header() {
 
     return (
         <div>
-            <header className='bg-gray-800 text-white static w-full top-0 left-0 shadow-md'>
-                <div className='container mx-auto flex flex-col md:flex-row items-start md:items-center justify-between p-4'>
+            <header className='custom-gray text-white static w-full top-0 left-0 shadow-sm'>
+                <div className='container w-full mx-auto flex flex-col md:flex-row items-start md:items-center justify-between p-4'>
                     <div className='w-full flex items-center justify-between'>
                         <div className='flex items-center justify-between gap-x-2'>
                             <button onClick={() => setMenuOpen(!menuOpen)}
-                                className='p-2 bg-gray-700 hover:bg-blue-500 rounded-full'
+                                className='p-2 hover:ring hover:ring-neutral-0 rounded-full'
                             >
                                 <FaBars />
                             </button>
@@ -58,7 +58,7 @@ function Header() {
                                 value={search}
                                 onChange={(event) => setSearch(event.target.value)}
                                 placeholder='Search watches...'
-                                className='p-2 outline-none bg-transparent'
+                                className='p-2 outline-none bg-transparent w-full md:w-96'
                             />
                             <button
                                 type='submit'
@@ -74,7 +74,7 @@ function Header() {
             <div
                 className={`fixed top-0 left-0 h-full w-4/5 md:w-1/2 lg:w-1/4 bg-gray-800 shadow-md z-50
                     transition transition-transform duration-300 ease-in-out 
-                    ${menuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+                    ${menuOpen ? 'translate-x-0' : '-translate-x-full'} md:hidden`}
             >
                 <div>
                     <button
@@ -84,7 +84,7 @@ function Header() {
                         <FaXmark />
                     </button>
                 </div>
-                <div className='p-4 overflow-y-auto h-full'>
+                <div className='custom-gray text-white p-4 overflow-y-auto h-full'>
                     {Object.entries(filters).map(([key, values]) => (
                         <div key={key} className='mb-4'>
                             <p
@@ -123,6 +123,48 @@ function Header() {
                     ))}
                 </div>
             </div>
+            {menuOpen && (
+                <div className='hidden md:flex w-full custom-gray p-4'>
+                    <div className='container mx-25 w-full flex items-start justify-around custom-gray'>
+                        {Object.entries(filters).map(([key, values]) => (
+                            <div key={key} className='custom-gray'>
+                                <p className='font-semibold text-white uppercase'>
+                                    {key.includes('Material') ? key.replace('Material', ' ') + 'material' : key}
+                                </p>
+                                <div className='mt-2 p-1 z-50'>
+                                    <div className='flex flex-col gap-2'>
+                                        {values.map((value) => {
+                                            let queryKey;
+                                            switch (key) {
+                                                case 'movement':
+                                                    queryKey = 'mvmt';
+                                                    break;
+                                                case 'caseMaterial':
+                                                    queryKey = 'casem';
+                                                    break;
+                                                case 'braceletMaterial':
+                                                    queryKey = 'bracem';
+                                                    break;
+                                                default:
+                                                    queryKey = key;
+                                            }
+                                            return (
+                                                <a
+                                                    key={value}
+                                                    href={`/browse?${queryKey}=${value}`}
+                                                    className='text-white hover:text-gray-300 transition'
+                                                >
+                                                    {value}
+                                                </a>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

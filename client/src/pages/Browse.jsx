@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Showcase from '../components/Showcase'
+import Showcase from '../components/Showcase';
 
 function Browse() {
     const [watches, setWatches] = useState([]);
@@ -63,12 +63,31 @@ function Browse() {
         fetchData();
     }
 
-    const changeSort = (event) => {
-        updateURL({ sortBy: event.target.value, page: 1 });
-    }
-
-    const changeOrder = (event) => {
-        updateURL({ order: event.target.value, page: 1 });
+    const handleSort = (event) => {
+        const value = event.target.value;
+        let sortBy = '';
+        let order = '';
+        switch (value) {
+            case 'sold-desc':
+                sortBy = 'sold';
+                order = 'desc';
+                break;
+            case 'createdAt-desc':
+                sortBy = 'createdAt';
+                order = 'desc';
+                break;
+            case 'price-desc':
+                sortBy = 'price';
+                order = 'desc';
+                break;
+            case 'price-asc':
+                sortBy = 'price';
+                order = 'asc';
+                break;
+            default:
+                break;
+        }
+        updateURL({ sortBy, order, page: 1 });
     }
 
     const changePage = (newPage) => {
@@ -82,7 +101,7 @@ function Browse() {
 
     return (
         <div className='flex flex-col justify-between items-center my-5'>
-            <div className='flex flex-wrap justify-between gap-4 w-full max-w-6xl'>
+            <div className='flex flex-wrap item-center gap-4 px-5 py-4 text-sm'>
                 {[
                     { label: 'Brand', name: 'brand', options: filters.brand },
                     { label: 'Movement type', name: 'mvmt', options: filters.movement },
@@ -90,9 +109,9 @@ function Browse() {
                     { label: 'Brace material', name: 'bracem', options: filters.braceletMaterial }
                 ].map(({ label, name, options }) => (
                     <div key={name}>
-                        <label>{label}: </label>
+                        <label className='sr-only'>{label}: </label>
                         <select name={name} onChange={changeFilter} defaultValue=''
-                            className='p-2 bg-slate-100 border border-gray-300 focus:bg-slate-200 rounded-xl w-40'
+                            className='custom-filter-color border border-gray-200 rounded-lg px-3 py-2 min-w-[150px] focus:outline-none focus:ring-2 focus:ring-slate-200'
                         >
                             <option value=''>All {label.toLowerCase()}s</option>
                             {options.map((option) => (
@@ -102,35 +121,30 @@ function Browse() {
                     </div>
                 ))}
                 <div>
-                    <label>Sex: </label>
+                    <label className='sr-only'>Sex: </label>
                     <select name='sex' onChange={changeFilter} defaultValue=''
-                        className='p-2 bg-slate-100 border border-gray-300 focus:bg-slate-200 rounded-xl w-40'
+                        className='custom-filter-color border border-gray-200 rounded-lg px-3 py-2 min-w-[150px] focus:outline-none focus:ring-2 focus:ring-slate-200'
                     >
-                        <option value=''>All</option>
+                        <option value=''>All sexes</option>
                         <option value='Men'>Men</option>
                         <option value='Women'>Women</option>
                     </select>
                 </div>
-                <div>
-                    <label>Sort By: </label>
-                    <select onChange={changeSort} defaultValue=''
-                        className='p-2 bg-slate-100 border border-gray-300 focus:bg-slate-200 rounded-xl w-40'
+                <div className='ml-auto'>
+                    <label className='text-sm mr-2'>Sort by</label>
+                    <select
+                        onChange={handleSort}
+                        defaultValue=''
+                        className='custom-filter-color border border-gray-200 rounded-md px-3 py-2 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-slate-200'
                     >
                         <option value=''>None</option>
-                        <option value='sold'>Number sold</option>
-                        <option value='price'>Price</option>
-                        <option value='createdAt'>Date added</option>
+                        <option value='sold-desc'>Best Seller</option>
+                        <option value='price-desc'>Price High to Low</option>
+                        <option value='price-asc'>Price Low to High</option>
+                        <option value='createdAt-desc'>Newest</option>
                     </select>
                 </div>
-                <div>
-                    <label>Order: </label>
-                    <select onChange={changeOrder} defaultValue='asc'
-                        className='p-2 bg-slate-100 border border-gray-300 focus:bg-slate-200 rounded-xl w-40'
-                    >
-                        <option value='asc'>Ascending</option>
-                        <option value='desc'>Descending</option>
-                    </select>
-                </div>
+
             </div>
             <Showcase
                 title=''
