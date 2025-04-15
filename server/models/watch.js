@@ -13,9 +13,9 @@ const watchSchema = new mongoose.Schema({
     bracem: { type: String, required: true },
     sex: { type: String, required: true, enum: ['Men', 'Women'] },
     image_url: { type: [String], required: true },
-    stock: { type: Number, required: true },
-    sold: { type: Number, required: true },
-    discount: { type: Number, default: 0 },
+    stock: { type: Number, required: true, min: 0 },
+    sold: { type: Number, required: true, min: 0 },
+    discount: { type: Number, default: 0, min: 0 },
     description: { type: String, default: 'Description' }
 }, { timestamps: true });
 

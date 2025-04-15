@@ -1,5 +1,5 @@
 const watchServices = require('../services/watchServices');
-const Watch = require('../models/watch')
+const Watch = require('../models/watch');
 
 async function filter(req, res) {
     try {

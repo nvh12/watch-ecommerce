@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }) => {
         const response = await fetch(`${apiUrl}/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify({
                 ...formData,
                 guestCart: cart
