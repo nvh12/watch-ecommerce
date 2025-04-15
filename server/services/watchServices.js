@@ -46,7 +46,11 @@ async function addWatch(info) {
 async function updateWatch(id, updateData) {
     try {
         const watchId = new mongoose.Types.ObjectId(`${id}`);
-        return await Watch.findByIdAndUpdate(watchId, updateData, { new: true, runValidators: true });
+        return await Watch.findOneAndUpdate(
+            { _id: watchId },        
+            updateData,
+            { new: true, runValidators: true }
+        );
     } catch (error) {
         throw error;
     }

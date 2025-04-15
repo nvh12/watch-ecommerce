@@ -58,9 +58,23 @@ async function getOrderNumber(userId='') {
     }
 }
 
+async function updateOrder(id, updateData) {
+    try {
+        const orderId = new mongoose.Types.ObjectId(`${id}`);
+        return await Order.findOneAndUpdate(
+            { _id: orderId },         
+            updateData,
+            { new: true, runValidators: true }
+        );
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     getOrder,
     getAllOrders,
     getOrdersByUser,
-    getOrderNumber
+    getOrderNumber,
+    updateOrder
 }

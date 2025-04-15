@@ -4,10 +4,6 @@ const watchServices = require('../services/watchServices');
 const orderServices = require('../services/orderServices');
 const Watch = require('../models/watch');
 
-function admin(req, res) {
-    res.send('Admin');
-}
-
 async function addProduct(req, res) {
     try {
         const { watch } = req.body;
@@ -70,10 +66,21 @@ async function getOrders(req, res) {
     }
 }
 
+async function updateOrder(req, res) {
+    try {
+        const { id } = req.params;
+        const { updateData } = req.body;
+        const order = await orderServices.updateOrder(id, updateData);
+        res.status(200).json({ status: 'success', product: product })
+    } catch (error) {
+        res.status(500).json({ status: 'error', error: error.message });
+    }
+}
+
 module.exports = {
-    admin,
     addProduct,
     updateProduct,
     deleteProducts,
-    getOrders
+    getOrders,
+    updateOrder
 };
