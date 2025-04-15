@@ -45,8 +45,22 @@ async function getOrdersByUser(userId, page = 1, limit = 20, sortBy = null, orde
     }
 }
 
+async function getOrderNumber(userId='') {
+    try {
+        if (userId) {
+            const id = new mongoose.Types.ObjectId(`${userId}`);
+            return await Order.countDocuments({user: id});
+        } else {
+            return await Order.countDocuments({});
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     getOrder,
     getAllOrders,
-    getOrdersByUser
+    getOrdersByUser,
+    getOrderNumber
 }

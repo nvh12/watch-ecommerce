@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Watch = require('../models/watch');
 
 async function getWatchById(id) {
@@ -44,15 +45,17 @@ async function addWatch(info) {
 
 async function updateWatch(id, updateData) {
     try {
-        return await Watch.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+        const watchId = new mongoose.Types.ObjectId(`${id}`);
+        return await Watch.findByIdAndUpdate(watchId, updateData, { new: true, runValidators: true });
     } catch (error) {
         throw error;
     }
 }
 
-async function deleteWatch(id) {
+async function deleteWatches(ids) {
     try {
-        return await Watch.findByIdAndDelete(id);
+        const list = ids.map(id => new mongoose.Types.ObjectId(`${id}`));
+        return await Watch.deleteMany({ _id: { $in: list } });
     } catch (error) {
         throw error;
     }
@@ -64,5 +67,5 @@ module.exports = {
     getWatchesByFilters,
     addWatch,
     updateWatch,
-    deleteWatch
+    deleteWatches
 }

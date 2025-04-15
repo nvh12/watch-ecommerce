@@ -8,7 +8,8 @@ const orderSchema = new mongoose.Schema({
         quantity: { type: Number, required: true }
     }],
     total_price: { type: Number, required: true },
-    payment: { type: String, enum: ['cash', 'QR'] }
+    payment: { type: String, enum: ['cash', 'QR'] },
+    status: { type: String, enum: ['shipped', 'delivered', 'cancelled']}
 }, { timestamps: true });
 
 module.exports = mongoose.model('Order', orderSchema, 'Orders');

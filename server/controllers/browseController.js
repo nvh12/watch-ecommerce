@@ -19,7 +19,7 @@ async function filter(req, res) {
 
 async function browse(req, res) {
     try {
-        let { page = 1, sortBy, order = "asc", ...filters } = req.query;
+        let { page = 1, sortBy = null, order = 'asc', ...filters } = req.query;
         page = parseInt(page);
         if (Number.isNaN(page) || page < 1) page = 1;
         Object.keys(filters).forEach(key => {
@@ -28,8 +28,8 @@ async function browse(req, res) {
         const total = await Watch.countDocuments(filters);
         if (total === 0) {
             return res.status(404).json({
-                status: "error",
-                message: "No watches found matching the criteria"
+                status: 'error',
+                message: 'No watches found matching the criteria'
             });
         }
         const watches = await watchServices.getWatchesByFilters(filters, page, 30, sortBy, order);

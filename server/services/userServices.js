@@ -1,4 +1,14 @@
+const mongoose = require('mongoose');
 const User = require('../models/user');
+
+async function getUserByObjectId(id) {
+    try {
+        const objectId = new mongoose.Types.ObjectId(`${id}`);
+        return await User.findById(objectId);
+    } catch (error) {
+        throw error;
+    }
+}
 
 async function getUserById(id) {
     try {
@@ -28,6 +38,7 @@ async function deleteUser(id) {
 }
 
 module.exports = {
+    getUserByObjectId,
     getUserById,
     updateUser,
     deleteUser

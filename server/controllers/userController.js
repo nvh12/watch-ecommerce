@@ -1,13 +1,13 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const userServices = require('../services/userServices');
-const User = require('../models/user');
+const orderServices = require('../services/orderServices');
 
 async function user(req, res) {
     try {
         const token = req.cookies.accessToken;
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const userObject = await User.findById(decoded.id);
+        const userObject = await userServices.getUserByObjectId(decoded.id);
         if (!userObject) return null;
         const { password: _, ...user } = userObject.toObject();
         res.status(200).json({ data: user, status: 'success' });
@@ -16,6 +16,34 @@ async function user(req, res) {
     }
 }
 
+async function userOrders(req, res) {
+    try {
+        const token = req.cookies.accessToken;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        let { page = 1, sortBy = null, order } = req.query;
+        page = parseInt(page);
+        if (Number.isNaN(page) || page < 1) page = 1;
+        const total = await orderServices.getOrderNumber(decoded.id);
+        if (total === 0) {
+            return res.status(200).json({
+                status: 'success',
+                message: 'No orders found'
+            });
+        }
+        const orders = await orderServices.getOrdersByUser(decoded.id, page, 20, sortBy, order);
+        res.status(200).json({
+            totalPages: Math.ceil(total / 20),
+            page: page,
+            order: order,
+            data: orders || [],
+            status: 'success'
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', error: error.message || 'Something went wrong' });
+    }
+}
+
 module.exports = {
-    user
+    user,
+    userOrders
 };
