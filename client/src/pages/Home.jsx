@@ -24,36 +24,24 @@ function Home() {
 
     return (
         <div className="container mx-auto px-4 sm:px-6">
-            <div className="mb-12">
-                <h1 className="text-2xl md:text-3xl font-bold mt-12 ml-6">Latest</h1>
-                <Showcase watches={latest} />
-                <button
-                    onClick={() => navigate('/browse?sortBy=createdAt&page=1&order=desc')}
-                    className="block mx-auto mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-                >
-                    See more
-                </button>
-            </div>
-            <div className="mb-12">
-                <h1 className="text-2xl md:text-3xl font-bold mt-12 ml-6">Bestsellers</h1>
-                <Showcase watches={bestseller} />
-                <button
-                    onClick={() => navigate('/browse?sortBy=sold&page=1&order=desc')}
-                    className="block mx-auto mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-                >
-                    See more
-                </button>
-            </div>
-            <div className="mb-12">
-                <h1 className="text-2xl md:text-3xl font-bold mt-12 ml-6">All Watches</h1>
-                <Showcase watches={all} />
-                <button
-                    onClick={() => navigate('/browse')}
-                    className="block mx-auto mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-                >
-                    See more
-                </button>
-            </div>
+            {[
+                { title: 'Latest', watches: latest, link: '/browse?sortBy=createdAt&page=1&order=desc' },
+                { title: 'Bestsellers', watches: bestseller, link: '/browse?sortBy=sold&page=1&order=desc' },
+                { title: 'All Watches', watches: all, link: '/browse' }
+            ].map((section, idx) => (
+                <div className='my-16' key={idx}>
+                    <h1 className='text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800 mb-4 ml-2 sm:ml-4'>
+                        {section.title}
+                    </h1>
+                    <Showcase watches={section.watches} />
+                    <button
+                        onClick={() => navigate(section.link)}
+                        className="block mx-auto mt-4 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-300 transition-colors shadow-sm"
+                    >
+                        See more
+                    </button>
+                </div>
+            ))}
         </div>
     );
 }

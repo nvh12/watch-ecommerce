@@ -131,13 +131,13 @@ function Browse() {
                     </select>
                 </div>
                 <div className='ml-auto'>
-                    <label className='text-sm mr-2'>Sort by</label>
+                    <label className='text-sm mr- sr-only'>Sort by</label>
                     <select
                         onChange={handleSort}
                         defaultValue=''
                         className='custom-filter-color border border-gray-200 rounded-md px-3 py-2 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-slate-200'
                     >
-                        <option value=''>None</option>
+                        <option value=''>Sort by</option>
                         <option value='sold-desc'>Best Seller</option>
                         <option value='price-desc'>Price High to Low</option>
                         <option value='price-asc'>Price Low to High</option>
@@ -149,23 +149,35 @@ function Browse() {
             <Showcase
                 title=''
                 watches={watches} />
-            <div className='text-center mt-4'>
+            <div className='text-center mt-6 flex items-center justify-center gap-4'>
                 <button
                     disabled={currentPage <= 1}
                     onClick={() => changePage(currentPage - 1)}
+                    className={`px-4 py-2 rounded-lg text-sm transition-colors duration-200 
+                            ${currentPage <= 1
+                            ? 'bg-gray-200 text-gray-400'
+                            : 'bg-neutral-100 hover:bg-neutral-200 text-gray-700 shadow-sm'}`}
                 >
                     Previous
                 </button>
 
-                <span> Page: {currentPage} / {totalPages} </span>
+                <span className='text-sm text-gray-600'>
+                    Page <span className='font-medium'>{currentPage}</span> of{' '}
+                    <span className='font-medium'>{totalPages}</span>
+                </span>
 
                 <button
                     disabled={currentPage >= totalPages}
                     onClick={() => changePage(currentPage + 1)}
+                    className={`px-4 py-2 rounded-lg text-sm transition-colors duration-200 
+                            ${currentPage >= totalPages
+                            ? 'bg-gray-200 text-gray-400'
+                            : 'bg-neutral-100 hover:bg-neutral-200 text-gray-700 shadow-sm'}`}
                 >
                     Next
                 </button>
             </div>
+
         </div>
     );
 }

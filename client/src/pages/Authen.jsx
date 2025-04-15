@@ -46,12 +46,12 @@ function Register() {
     };
 
     return (
-        <div className='flex justify-center items-center py-10'>
-            <form onSubmit={handleSubmit} className='bg-white shadow-lg rounded-2xl p-8 w-96 space-y-6'>
-                <h2 className='text-2xl font-bold text-center'>Create a new account</h2>
+        <div className='flex justify-center items-center py-12 px-4'>
+            <form onSubmit={handleSubmit} className='bg-neutral-50 shadow-md rounded-2xl p-8 w-96 space-y-6'>
+                <h2 className='text-2xl font-bold text-gray-800 text-center'>Create a new account</h2>
                 {['email', 'username', 'password', 'password2'].map((field, index) => (
                     <div key={index}>
-                        <label htmlFor={field} className='block text-sm font-medium text-gray-700 mb-1'>
+                        <label htmlFor={field} className='block text-sm text-gray-600 mb-1'>
                             {field === 'password2' ? 'Confirm Password' : field.charAt(0).toUpperCase() + field.slice(1)}:
                         </label>
                         <input
@@ -60,7 +60,7 @@ function Register() {
                             name={field}
                             value={formData[field]}
                             onChange={handleChange}
-                            className='w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+                            className='w-full p-2 border border-gray-300 rounded-lg bg-neutral-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400  transition'
                         />
                     </div>
                 ))}
@@ -111,21 +111,21 @@ function Login() {
 
     return (
         <div className='flex justify-center items-center py-10'>
-            <form onSubmit={handleSubmit} className='bg-white shadow-lg rounded-2xl p-8 w-96 space-y-6'>
-                <h2 className='text-2xl font-bold text-center'>Log in</h2>
+            <form onSubmit={handleSubmit} className='bg-neutral-50 shadow-md rounded-2xl p-8 w-96 space-y-6'>
+                <h2 className='text-2xl font-bold text-gray-800 text-center'>Log in</h2>
                 <div>
-                    <label htmlFor='identifier' className='block text-sm font-medium text-gray-700 mb-1'>Email or Username:</label>
+                    <label htmlFor='identifier' className='block text-sm text-gray-600 mb-1'>Email or Username:</label>
                     <input type='text' id='identifier' name='identifier' value={formData.identifier} onChange={handleChange}
-                        className='w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500' />
+                        className='w-full p-2 border border-gray-300 rounded-lg bg-neutral-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400  transition' />
                 </div>
                 <div>
-                    <label htmlFor='password' className='block text-sm font-medium text-gray-700 mb-1'>Password:</label>
+                    <label htmlFor='password' className='block text-sm text-gray-600 mb-1'>Password:</label>
                     <input type='password' id='password' name='password' value={formData.password} onChange={handleChange}
-                        className='w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500' />
+                        className='w-full p-2 border border-gray-300 rounded-lg bg-neutral-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400  transition' />
                 </div>
                 <div className='flex justify-end'>
                     <button type='submit' disabled={loading}
-                        className='px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors'>{loading ? 'Loading' : 'Sign in'}</button>
+                        className='px-4 py-2 bg-[#2b2c2d] text-white rounded-lg hover:bg-[#2a2a2a] hover:bg-slate-700 transition-colors disabled:opacity-50'>{loading ? 'Loading' : 'Sign in'}</button>
                 </div>
             </form>
         </div>

@@ -13,7 +13,7 @@ function WatchCard({ watch, navigate }) {
 
     return (
         <div key={watch.watch_id}
-            className='p-4 shadow-sm bg-neutral-50 rounded-xl text-center flex flex-col justify-around'>
+            className='p-4 shadow-sm bg-neutral-50 rounded-xl text-center flex flex-col justify-around transform transition-transform duration-300 ease-in-out hover:scale-105 hover:-translate-y-1 hover:shadow-md'>
             <div>
                 <img src={imgSrc} alt={watch.name}
                     className='w-full h-48 object-cover rounded-md'
@@ -24,9 +24,6 @@ function WatchCard({ watch, navigate }) {
             <div className='flex flex-col'>
                 <p className='text-gray-500 text-sm'>Brand: {watch.brand}</p>
                 <p className='text-green-600 font-semibold text-md'>${watch.price}</p>
-                <p className={`${watch.stock > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                    {watch.stock > 0 ? `In Stock: ${watch.stock}` : 'Out of Stock'}
-                </p>
                 <button onClick={() => navigate(`/product/${watch.watch_id}`)}
                     className='bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm mt-1 hover:bg-gray-300 transition-colors'>
                     View Details
