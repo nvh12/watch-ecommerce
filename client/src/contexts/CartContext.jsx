@@ -20,10 +20,10 @@ export const CartProvider = ({ children }) => {
 
     const addItem = (item) => {
         setCart((prevCart = []) => {
-            const existing = prevCart.find((it) => it.id === item.id);
+            const existing = prevCart.find((it) => it.product === item.product);
             if (existing) {
                 return prevCart.map((it) => 
-                    it.id === item.id ? { ...it, quantity: it.quantity + 1 } : it
+                    it.product === item.product ? { ...it, quantity: it.quantity + 1 } : it
                 );
             }
             return [...prevCart, { ...item, quantity: 1 }];
@@ -31,7 +31,7 @@ export const CartProvider = ({ children }) => {
     };
 
     const removeItem = (itemId) => {
-        setCart((prevCart) => prevCart.filter((item) => item.id !== itemId));
+        setCart((prevCart) => prevCart.filter((item) => item.product !== itemId));
     }
 
     const clearCart = () => setCart([]);

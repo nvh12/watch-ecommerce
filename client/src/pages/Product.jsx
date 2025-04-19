@@ -41,7 +41,7 @@ function Product() {
                     <p><span className='font-medium'>Bracelet Material:</span> {watch.bracem}</p>
                     <p><span className='font-medium'>Sex:</span> {watch.sex}</p>
                     <button
-                        onClick={() => addItem({ id: watch._id, price: watch.price})}
+                        onClick={() => addItem({ product: watch._id, price: watch.price})}
                         className='mt-4 w-full md:w-1/2 bg-red-700 text-white py-2 rounded-xl hover:bg-red-500 transition'
                     >
                         Add to cart

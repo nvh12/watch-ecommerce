@@ -16,7 +16,7 @@ function Home() {
                 if (data.status === 'success') {
                     setLatest(data.latest);
                     setBestseller(data.bestseller);
-                    setAll(data.all)
+                    setAll(data.all);
                 }
             })
             .catch(error => console.error('Fetch failed:', error));

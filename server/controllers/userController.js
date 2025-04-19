@@ -8,7 +8,7 @@ async function user(req, res) {
         const token = req.cookies.accessToken;
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const userObject = await userServices.getUserByObjectId(decoded.id);
-        if (!userObject) return null;
+        if (!userObject) return res.status(404).json({ message: 'User not found' });
         const { password: _, ...user } = userObject.toObject();
         res.status(200).json({ data: user, status: 'success' });
     } catch (error) {

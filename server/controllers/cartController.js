@@ -1,5 +1,4 @@
 require('dotenv').config();
-const jwt = require('jsonwebtoken');
 const cartServices = require('../services/cartServices');
 const Watch = require('../models/watch');
 const Order = require('../models/order');
