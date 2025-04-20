@@ -14,7 +14,7 @@ async function getCart(userId) {
 async function addItem(item, userId) {
     try {
         const userObjectId = new mongoose.Types.ObjectId(`${userId}`);
-        const itemId = new mongoose.Types.ObjectId(`${item.id}`);
+        const itemId = new mongoose.Types.ObjectId(`${item.product}`);
         let cart = await Cart.findOne({ user: userObjectId });
         if (!cart) {
             cart = new Cart({ user: userObjectId, items: [], total_price: 0 });
@@ -35,7 +35,7 @@ async function addItem(item, userId) {
 async function reduceItem(item, userId) {
     try {
         const userObjectId = new mongoose.Types.ObjectId(`${userId}`);
-        const itemId = new mongoose.Types.ObjectId(`${item.id}`);
+        const itemId = new mongoose.Types.ObjectId(`${item.product}`);
         let cart = await Cart.findOne({ user: userObjectId });
         if (!cart) {
             cart = new Cart({ user: userObjectId, items: [], total_price: 0 });
@@ -58,7 +58,7 @@ async function reduceItem(item, userId) {
 async function removeItem(item, userId) {
     try {
         const userObjectId = new mongoose.Types.ObjectId(`${userId}`);
-        const itemId = new mongoose.Types.ObjectId(`${item.id}`);
+        const itemId = new mongoose.Types.ObjectId(`${item.product}`);
         const cart = await Cart.findOne({ user: userObjectId });
         if (!cart) throw new Error('Cart not found');
         const itemIndex = cart.items.findIndex((it) => it.product.equals(itemId));

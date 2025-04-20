@@ -29,14 +29,14 @@ function CartandLoginButtons({ className = '' }) {
     return (
         <div className={`${className} flex items-center gap-2`} ref={dropdownRef}>
             <button
-                className='p-2 hover:ring hover:ring-neutral-200 rounded-full'
+                className='p-2 header-button rounded-full'
                 onClick={() => navigate('/cart')}
             >
                 <FaCartShopping />
             </button>
             <div className='relative'>
                 <button
-                    className='p-2 hover:ring hover:ring-neutral-200 rounded-full'
+                    className='p-2 header-button rounded-full'
                     onClick={() => setDropdownOpen(state => !state)}
                 >
                     <FaUser />
@@ -55,6 +55,7 @@ function CartandLoginButtons({ className = '' }) {
                                     onClick={() => {
                                         logout();
                                         setDropdownOpen(false);
+                                        navigate('/');
                                     }}
                                     className='w-full text-left px-4 py-2 hover:bg-gray-100'
                                 >

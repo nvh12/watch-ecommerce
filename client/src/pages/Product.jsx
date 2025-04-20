@@ -1,14 +1,36 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import ImageGallery from '../components/ImageGallery';
 
 function Product() {
     const { addItem } = useCart();
+    const { user } = useAuth();
     const [watch, setWatch] = useState(null);
     const [loading, setLoading] = useState(true);
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
     const { id } = useParams();
+
+    const addProduct = async (id, price) => {
+        if (user) {
+            const response = await fetch(`${apiUrl}/cart/add`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({
+                    product: id,
+                    price: price
+                })
+            });
+            const result = await response.json();
+            if (result.status !== 'success') {
+                console.error('Add to cart failed:', result.message);
+            }
+        } else {
+            addItem({ product: id, price: price });
+        }
+    }
 
     useEffect(() => {
         fetch(`${apiUrl}/product/${id}`)
@@ -41,8 +63,8 @@ function Product() {
                     <p><span className='font-medium'>Bracelet Material:</span> {watch.bracem}</p>
                     <p><span className='font-medium'>Sex:</span> {watch.sex}</p>
                     <button
-                        onClick={() => addItem({ product: watch._id, price: watch.price})}
-                        className='mt-4 w-full md:w-1/2 bg-red-700 text-white py-2 rounded-xl hover:bg-red-500 transition'
+                        onClick={() => addProduct(watch._id, watch.price)}
+                        className='mt-4 w-full md:w-1/2 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition'
                     >
                         Add to cart
                     </button>

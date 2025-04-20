@@ -36,7 +36,7 @@ function Header() {
                     <div className='w-full flex items-center justify-between'>
                         <div className='flex items-center justify-between gap-x-2'>
                             <button onClick={() => setMenuOpen(!menuOpen)}
-                                className='p-2 hover:ring hover:ring-neutral-0 rounded-full'
+                                className='p-2 header-button rounded-full'
                             >
                                 <FaBars />
                             </button>
