@@ -8,12 +8,12 @@ const orderSchema = new mongoose.Schema({
         quantity: { type: Number, required: true }
     }],
     total_price: { type: Number, required: true },
-    payment: { type: String, enum: ['cash', 'QR'], required: true },
+    payment: { type: String, enum: ['cash', 'transfer'], required: true },
     delivery: { type: String, enum: ['store', 'delivery'], required: true },
-    address: { 
-        type: String, 
+    address: {
+        type: String,
         validate: {
-            validator: function(v) {
+            validator: function (v) {
                 return this.delivery === 'store' || (this.delivery === 'delivery' && v);
             },
             message: props => 'Address is required for delivery orders.'
@@ -23,7 +23,7 @@ const orderSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 orderSchema.pre('save', function (next) {
-    this.total_price = this.item.reduce((total, item) => total + (item.price * item.quantity), 0);
+    this.total_price = this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
     next();
 });
 

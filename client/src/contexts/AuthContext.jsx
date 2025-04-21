@@ -7,6 +7,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
     const { cart, clearCart } = useCart();
 
@@ -57,51 +58,55 @@ export const AuthProvider = ({ children }) => {
             .catch(() => {
                 setUser(null);
             })
+            .finally(() => {
+                setLoading(false);
+            });
     }
 
-    const refresh = () => {
-        fetch(`${apiUrl}/auth/refresh`, {
-            method: 'POST',
-            credentials: 'include'
+const refresh = () => {
+    fetch(`${apiUrl}/auth/refresh`, {
+        method: 'POST',
+        credentials: 'include'
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (!data.refreshed) logout();
         })
-            .then(res => res.json())
-            .then(data => {
-                if (!data.refreshed) logout();
-            })
-            .catch(() => {
-                logout();
-            })
-    }
-
-    const logout = () => {
-        setUser(null);
-        clearCart();
-        localStorage.removeItem('cart');
-        fetch(`${apiUrl}/auth/logout`, {
-            method: 'POST',
-            credentials: 'include'
+        .catch(() => {
+            logout();
         })
-    }
+}
 
-    useEffect(() => {
-        status();
-        const interval = setInterval(() => {
-            refresh();
-        }, 1000 * 60 * 5);
-        return () => clearInterval(interval);
-    }, []);
+const logout = () => {
+    setUser(null);
+    clearCart();
+    localStorage.removeItem('cart');
+    fetch(`${apiUrl}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include'
+    })
+}
 
-    return (
-        <AuthContext.Provider value={{
-            user,
-            setUser,
-            register,
-            login,
-            status,
-            refresh,
-            logout
-        }} >
-            {children}
-        </AuthContext.Provider>
-    );
+useEffect(() => {
+    status();
+    const interval = setInterval(() => {
+        refresh();
+    }, 1000 * 60 * 5);
+    return () => clearInterval(interval);
+}, []);
+
+return (
+    <AuthContext.Provider value={{
+        user,
+        setUser,
+        loading,
+        register,
+        login,
+        status,
+        refresh,
+        logout
+    }} >
+        {children}
+    </AuthContext.Provider>
+);
 };

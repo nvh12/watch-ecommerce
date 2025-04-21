@@ -30,10 +30,8 @@ function Cart() {
             cartItems = cart;
         }
         try {
-            const watchPromises = Object.values(cartItems).map(item => fetchWatch(item.product));
-            const details = await Promise.all(watchPromises);
-            const combined = cartItems.map((item, index) => ({
-                product: details[index],
+            const combined = cartItems.map((item) => ({
+                product: item.product,
                 quantity: item.quantity
             }));
             setItemList(combined);
@@ -107,12 +105,6 @@ function Cart() {
         loadData();
     }
 
-    const fetchWatch = async (id) => {
-        const response = await fetch(`${apiUrl}/product/${id}`);
-        const data = await response.json();
-        return data.watch;
-    }
-
     useEffect(() => {
         loadData();
     }, [user, cart]);
@@ -143,7 +135,7 @@ function Cart() {
                         const imgSrc = item.product.image_url[imgIndex];
                         return (
                             <div key={item.product.watch_id}
-                                className='md:mx-25 my-1 p-4 shadow-sm bg-neutral-50 rounded-lg flex flex-col sm:flex-row items-start sm:items-center transform transition-transform duration-300 ease-in-out hover:scale-101 hover:-translate-y-1 hover:shadow-md'>
+                                className='md:mx-15 my-1 p-4 shadow-sm bg-neutral-50 rounded-lg flex flex-col sm:flex-row items-start sm:items-center transform transition-transform duration-300 ease-in-out hover:scale-101 hover:-translate-y-1 hover:shadow-md'>
                                 <div className='w-1/3 sm:w-1/4 flex justify-center sm:justify-start'>
                                     <img src={imgSrc} alt={item.product.name}
                                         className='w-24 h-24 md:w-32 md:h-32 object-cover rounded-md'
@@ -185,7 +177,7 @@ function Cart() {
                         )
                     })}
                 </div>
-                <div className='w-full lg:w-1/4 mr-7 p-4 bg-neutral-50 rounded-lg h-fit shadow-md'>
+                <div className='w-full lg:w-1/4 mr-7 p-4 bg-neutral-50 rounded-lg h-fit shadow-sm'>
                     <h2 className='text-xl text-center font-semibold mb-4'>Order info</h2>
                     <div className='flex justify-between text-lg font-semibold mb-20'>
                         <span>Total:</span>
@@ -209,4 +201,4 @@ function Cart() {
     );
 }
 
-export { Cart };
+export default Cart;

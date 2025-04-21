@@ -10,7 +10,7 @@ const cartSchema = new mongoose.Schema({
     total_price: { type: Number, required: true }
 }, { timestamps: true });
 
-cartSchema.pre('save', function(next) {
+cartSchema.pre('save', function (next) {
     this.total_price = this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
     next();
 });

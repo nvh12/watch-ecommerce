@@ -60,7 +60,7 @@ function Register() {
                             name={field}
                             value={formData[field]}
                             onChange={handleChange}
-                            className='w-full p-2 border border-gray-300 rounded-lg bg-neutral-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400  transition'
+                            className='w-full p-2 border border-gray-300 rounded-lg bg-neutral-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition'
                         />
                     </div>
                 ))}
