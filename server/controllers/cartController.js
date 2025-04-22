@@ -60,7 +60,7 @@ async function rollback(updatedProducts) {
     for (const product of updatedProducts) {
         await Watch.findByIdAndUpdate(
             product.productId,
-            { $set: { stock: product.originalStock } }
+            { $set: { stock: product.originalStock, sold: product.originalSold} } 
         );
     }
 }
@@ -90,21 +90,21 @@ async function checkout(req, res) {
         for (const item of cart.items) {
             const product = await Watch.findById(item.product._id);
             const originalStock = product.stock;
+            const originalSold = product.sold;
             const update = await Watch.findOneAndUpdate(
                 { _id: item.product._id, stock: { $gte: item.quantity } },
-                { $inc: { stock: -item.quantity } },
-                { $inc: { sold: +item.quantity } },
+                { $inc: { stock: -item.quantity, sold: item.quantity } },
                 { runValidators: true, new: true }
             );
             if (!update) {
                 await rollback(updatedProducts);
                 return res.status(400).json({ message: `${item.product.name} went out of stock during checkout.` });
             }
-            updatedProducts.push({ productId: item.product._id, originalStock });
+            updatedProducts.push({ productId: item.product._id, originalStock, originalSold });
         }
         await newOrder.save();
         await cartServices.clearCart(userId);
-        return res.status(200).json({ message: 'Order placed successfully!', orderId: newOrder._id });
+        return res.status(200).json({ status: 'success', message: 'Order placed successfully!', orderId: newOrder._id });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

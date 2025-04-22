@@ -112,16 +112,16 @@ function Cart() {
     if (itemList.length === 0) {
         return (
             <div className='flex flex-col my-16'>
-                <h1 className='text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800 mb-4 ml-2 sm:ml-4'>
+                <h1 className='text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800 mb-4 ml-6 sm:ml-10'>
                     Cart
                 </h1>
-                <p>No product in cart</p>
+                <p className='ml-6 sm:ml-10'>No product in cart</p>
             </div>
         )
     }
 
     return (
-        <div className='my-10'>
+        <div className='mx-auto my-10 px-4'>
             <h1 className='text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800 mb-5 ml-12'>
                 Cart
             </h1>

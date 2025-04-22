@@ -6,6 +6,13 @@ function Checkout() {
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
     const [itemList, setItemList] = useState([]);
     const [total, setTotal] = useState(0);
+    const [ordered, setOrdered] = useState(false);
+    const [formData, setFormData] = useState({
+        userId: '',
+        payment: '',
+        delivery: '',
+        address: ''
+    });
     const navigate = useNavigate();
     const { user, loading } = useAuth();
 
@@ -45,33 +52,76 @@ function Checkout() {
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
             body: JSON.stringify({
-                userId: user._id,
-                
+                userId: formData.userId,
+                payment: formData.payment,
+                delivery: formData.delivery,
+                address: formData.address
             })
         });
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message);
+        } else {
+            throw new Error(result.error);
+        }
+    }
+
+    const handleChange = (event) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value
+        })
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!formData.payment || !formData.delivery) {
+            alert('Please fill in all fields.');
+            return;
+        }
+        if (ordered) {
+            alert('Order already placed.');
+            return;
+        }
+        try {
+            await handleCheckout(formData);
+            setOrdered(true);
+        }
+        catch (error) {
+            console.error('Error:', error);
+            alert(error);
+        }
     }
 
     useEffect(() => {
         if (loading) return;
         if (!user) navigate('/auth/login');
+        setFormData(prev => ({
+            ...prev,
+            userId: user.id
+        }));
         loadData();
     }, [loading, user]);
 
     return (
         <div className='mx-auto my-10 px-4'>
             <h2 className='text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800 mb-5 ml-12'>
-                Checkout info
+                Checkout 
             </h2>
             <div className='flex flex-col lg:flex-row justify-between'>
                 <div className='md:mx-15 flex-1 bg-neutral-50 rounded-lg shadow-sm p-4 mb-8'>
-                    <form onSubmit={handleCheckout} className='space-y-5'>
+                    <form onSubmit={handleSubmit} className='space-y-5'>
                         <div>
                             <label className='block text-sm text-gray-600 mb-1'>
                                 Delivery option
                             </label>
                             <select
+                                name='delivery'
+                                value={formData.delivery}
+                                onChange={handleChange}
                                 className='w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-slate-400 transition'
                             >
+                                <option value=''>Choose delivery option</option>
                                 <option value='store'>Store</option>
                                 <option value='delivery'>Delivery</option>
                             </select>
@@ -82,12 +132,19 @@ function Checkout() {
                             </label>
                             <input
                                 type='text'
+                                name='address'
+                                value={formData.address}
+                                onChange={handleChange}
                                 className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition'
                             />
                         </div>
                         <div>
                             <label className='block text-sm text-gray-600 mb-1'>Payment method</label>
-                            <select>
+                            <select
+                                name='payment'
+                                value={formData.payment}
+                                onChange={handleChange}>
+                                <option value=''>Choose payment option</option>
                                 <option value='cash'>Cash</option>
                                 <option value='transfer'>Transfer</option>
                             </select>
@@ -103,9 +160,13 @@ function Checkout() {
                         <div className='pt-4'>
                             <button
                                 type='submit'
-                                className='w-full bg-red-600 text-white my-2 py-2 rounded-lg text-md hover:bg-red-700'
+                                disabled={ordered}
+                                className={`w-full text-white my-2 py-2 rounded-lg text-md
+                                    ${ordered ?
+                                        'bg-gray-400 cursor-not-allowed text-white' : 'bg-red-600 hover:bg-red-700'
+                                    }`}
                             >
-                                Place Order
+                                {ordered ? 'Order Placed' : 'Place Order'}
                             </button>
                         </div>
                     </form>
@@ -121,7 +182,7 @@ function Checkout() {
                         return (
                             <div key={item.product.watch_id}
                                 className='my-1 p-1 shadow-sm bg-neutral-50 rounded-lg flex flex-col sm:flex-row items-start sm:items-center'>
-                                <div className='w-1/3 sm:w-1/4 flex justify-center sm:justify-start'>
+                                <div className='w-1/3 sm:w-1/4 flex justify-center'>
                                     <img src={imgSrc} alt={item.product.name}
                                         className='w-18 h-18 md:w-24 md:h-24 object-cover rounded-md'
                                     />
