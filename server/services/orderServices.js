@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const Order = require('../models/order');
+const order = require('../models/order');
 
 async function getOrder(id) {
     try {
         const orderId = new mongoose.Types.ObjectId(`${id}`);
-        return await Order.findById(orderId);
+        return await Order.findById(orderId).populate('items.product');
     } catch (error) {
         throw error;
     }

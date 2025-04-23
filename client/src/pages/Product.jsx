@@ -51,17 +51,18 @@ function Product() {
     }
     return (
         <div className='max-w-5xl mx-auto p-6'>
-            <div className='flex flex-col md:flex-row gap-10 bg-white shadow-md p-6 items-center'>
+            <div className='rounded-xl flex flex-col md:flex-row gap-10 bg-white shadow-md p-6 items-center'>
                 <ImageGallery imageURLs={watch.image_url} name={watch.name} />
                 <div className='flex flex-col gap-2'>
-                    <h1 className='text-2xl font-semibold'>{watch.name}</h1>
-                    <p><span className='font-medium'>Brand:</span> {watch.brand}</p>
-                    <p><span className='font-medium'>Model:</span> {watch.model}</p>
-                    <p><span className='font-medium'>Ref:</span> {watch.ref}</p>
-                    <p><span className='font-medium'>Movement:</span> {watch.mvmt}</p>
-                    <p><span className='font-medium'>Case Material:</span> {watch.casem}</p>
-                    <p><span className='font-medium'>Bracelet Material:</span> {watch.bracem}</p>
-                    <p><span className='font-medium'>Sex:</span> {watch.sex}</p>
+                    <h1 className='text-2xl font-semibold mb-3'>{watch.name}</h1>
+                    <p className='font-medium'><span>Brand:</span> {watch.brand}</p>
+                    <p className='font-medium'><span>Model:</span> {watch.model}</p>
+                    <p className='font-medium'><span>Ref:</span> {watch.ref}</p>
+                    <p className='font-medium'><span>Movement:</span> {watch.mvmt}</p>
+                    <p className='font-medium'><span>Case Material:</span> {watch.casem}</p>
+                    <p className='font-medium'><span>Bracelet Material:</span> {watch.bracem}</p>
+                    <p className='font-medium'><span>Sex:</span> {watch.sex}</p>
+                    <p className='text-2xl font-semibold text-green-600'>${watch.price}</p>
                     <button
                         onClick={() => addProduct(watch._id, watch.price)}
                         className='mt-4 w-full md:w-1/2 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition'
@@ -70,7 +71,7 @@ function Product() {
                     </button>
                 </div>
             </div>
-            <div className='mt-8 bg-white shadow-md rounded-2xl p-6'>
+            <div className='mt-8 bg-white shadow-md rounded-xl p-6'>
                 <h2 className='text-xl font-semibold mb-2'>Description</h2>
                 <p>{watch.description}</p>
             </div>

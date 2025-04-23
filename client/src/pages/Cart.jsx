@@ -128,16 +128,11 @@ function Cart() {
             <div className='flex flex-col lg:flex-row justify-between'>
                 <div className='flex-1'>
                     {itemList.map((item) => {
-                        let imgIndex = 0;
-                        if (imgIndex < item.product.image_url.length - 1) {
-                            imgIndex++;
-                        }
-                        const imgSrc = item.product.image_url[imgIndex];
                         return (
                             <div key={item.product.watch_id}
                                 className='md:mx-15 my-1 p-4 shadow-sm bg-neutral-50 rounded-lg flex flex-col sm:flex-row items-start sm:items-center transform transition-transform duration-300 ease-in-out hover:scale-101 hover:-translate-y-1 hover:shadow-md'>
                                 <div className='w-1/3 sm:w-1/4 flex justify-center sm:justify-start'>
-                                    <img src={imgSrc} alt={item.product.name}
+                                    <img src={item.product.image_url[0]} alt={item.product.name}
                                         className='w-24 h-24 md:w-32 md:h-32 object-cover rounded-md'
                                     />
                                 </div>
@@ -145,14 +140,14 @@ function Cart() {
                                     <h3 className='text-md sm:text-lg font-semibold mt-0 line-clamp'>{item.product.name}</h3>
                                     <p className='text-gray-500 text-xs md:text-md'>Brand: {item.product.brand}</p>
                                     <div className='flex items-center justify-between mt-2'>
-                                        <p className='text-green-600 font-semibold text-sm md:text-lg'>${item.product.price}</p>
+                                        <p className='text-green-600 font-semibold text-sm md:text-base'>${item.product.price}</p>
                                         <div className='flex items-center mt-2 space-x-2'>
                                             <button
                                                 className='bg-gray-200 px-2 py-1 rounded hover:bg-gray-300 text-sm'
                                                 onClick={() => { reduceProduct(item.product._id, item.product.price) }}>
                                                 -
                                             </button>
-                                            <span className='text-sm md:text-base'>{item.quantity}</span>
+                                            <span className='text-sm'>{item.quantity}</span>
                                             <button
                                                 className='bg-gray-200 px-2 py-1 rounded hover:bg-gray-300 text-sm'
                                                 onClick={() => { addProduct(item.product._id, item.product.price) }}>

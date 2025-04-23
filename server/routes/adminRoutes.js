@@ -8,9 +8,9 @@ router.use(verifyUser);
 router.use(verifyRole('admin'));
 
 router.post('/product', addProduct);
-router.put('/product', updateProduct);
+router.put('/product/:id', updateProduct);
 router.delete('/product', deleteProducts);
 router.get('/order', getOrders);
-router.put('/order', updateOrder);
+router.put('/order/:id', updateOrder);
 
 module.exports = router;

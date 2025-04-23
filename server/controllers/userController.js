@@ -30,9 +30,10 @@ async function userOrders(req, res) {
                 message: 'No orders found'
             });
         }
-        const orders = await orderServices.getOrdersByUser(decoded.id, page, 20, sortBy, order);
+        const limit = 5;
+        const orders = await orderServices.getOrdersByUser(decoded.id, page, limit, sortBy, order);
         res.status(200).json({
-            totalPages: Math.ceil(total / 20),
+            totalPages: Math.ceil(total / limit),
             page: page,
             order: order,
             data: orders || [],

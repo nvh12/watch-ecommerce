@@ -96,17 +96,19 @@ function Checkout() {
     useEffect(() => {
         if (loading) return;
         if (!user) navigate('/auth/login');
-        setFormData(prev => ({
-            ...prev,
-            userId: user.id
-        }));
-        loadData();
+        else {
+            setFormData(prev => ({
+                ...prev,
+                userId: user.id
+            }));
+            loadData();
+        }
     }, [loading, user]);
 
     return (
         <div className='mx-auto my-10 px-4'>
             <h2 className='text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800 mb-5 ml-12'>
-                Checkout 
+                Checkout
             </h2>
             <div className='flex flex-col lg:flex-row justify-between'>
                 <div className='md:mx-15 flex-1 bg-neutral-50 rounded-lg shadow-sm p-4 mb-8'>

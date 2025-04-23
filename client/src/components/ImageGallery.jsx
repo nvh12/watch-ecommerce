@@ -40,8 +40,8 @@ function ImageGallery({ imageURLs = [], name }) {
             />
             {validImages.length > 1 && (
                 <div className='mt-2 flex gap-3'>
-                    <button onClick={handlePrev} className='px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded'>Prev</button>
-                    <button onClick={handleNext} className='px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded'>Next</button>
+                    <button onClick={handlePrev} className='text-gray-700 text-sm px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded'>Prev</button>
+                    <button onClick={handleNext} className='text-gray-700 text-sm px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded'>Next</button>
                 </div>
             )}
         </div>

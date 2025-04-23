@@ -32,7 +32,7 @@ function Header() {
     return (
         <div>
             <header className='custom-gray text-white static w-full top-0 left-0 shadow-sm'>
-                <div className='container w-full mx-auto flex flex-col md:flex-row items-start md:items-center justify-between p-4'>
+                <div className='container w-full mx-auto flex flex-col md:flex-row items-start md:items-center justify-between p-5'>
                     <div className='w-full flex items-center justify-between'>
                         <div className='flex items-center justify-between gap-x-2'>
                             <button onClick={() => setMenuOpen(!menuOpen)}

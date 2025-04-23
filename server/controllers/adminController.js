@@ -71,7 +71,7 @@ async function updateOrder(req, res) {
         const { id } = req.params;
         const { updateData } = req.body;
         const order = await orderServices.updateOrder(id, updateData);
-        res.status(200).json({ status: 'success', product: product })
+        res.status(200).json({ status: 'success', order: order })
     } catch (error) {
         res.status(500).json({ status: 'error', error: error.message });
     }
