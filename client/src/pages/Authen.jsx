@@ -64,6 +64,7 @@ function Register() {
                         />
                     </div>
                 ))}
+                <a href='/auth/login' className='underline hover:opacity-80'>Already have an account? Login</a>
                 <div className='flex justify-end'>
                     <button type='submit' disabled={loading}
                         className='px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors'>{loading ? 'Loading' : 'Sign up'}</button>
@@ -123,6 +124,7 @@ function Login() {
                     <input type='password' id='password' name='password' value={formData.password} onChange={handleChange}
                         className='w-full p-2 border border-gray-300 rounded-lg bg-neutral-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400  transition' />
                 </div>
+                <a href='/auth/register' className='underline hover:opacity-80'>Don't have an account? Register</a>
                 <div className='flex justify-end'>
                     <button type='submit' disabled={loading}
                         className='px-4 py-2 bg-[#2b2c2d] text-white rounded-lg hover:bg-[#2a2a2a] hover:bg-slate-700 transition-colors disabled:opacity-50'>{loading ? 'Loading' : 'Sign in'}</button>
