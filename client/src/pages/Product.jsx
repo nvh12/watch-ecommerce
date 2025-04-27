@@ -55,13 +55,13 @@ function Product() {
                 <ImageGallery imageURLs={watch.image_url} name={watch.name} />
                 <div className='flex flex-col gap-2'>
                     <h1 className='text-2xl font-semibold mb-3'>{watch.name}</h1>
-                    <p className='font-medium'><span>Brand:</span> {watch.brand}</p>
-                    <p className='font-medium'><span>Model:</span> {watch.model}</p>
-                    <p className='font-medium'><span>Ref:</span> {watch.ref}</p>
-                    <p className='font-medium'><span>Movement:</span> {watch.mvmt}</p>
-                    <p className='font-medium'><span>Case Material:</span> {watch.casem}</p>
-                    <p className='font-medium'><span>Bracelet Material:</span> {watch.bracem}</p>
-                    <p className='font-medium'><span>Sex:</span> {watch.sex}</p>
+                    <p className='font-medium'><span className='font-semibold'>Brand:</span> {watch.brand}</p>
+                    <p className='font-medium'><span className='font-semibold'>Model:</span> {watch.model}</p>
+                    <p className='font-medium'><span className='font-semibold'>Ref:</span> {watch.ref}</p>
+                    <p className='font-medium'><span className='font-semibold'>Movement:</span> {watch.mvmt}</p>
+                    <p className='font-medium'><span className='font-semibold'>Case Material:</span> {watch.casem}</p>
+                    <p className='font-medium'><span className='font-semibold'>Bracelet Material:</span> {watch.bracem}</p>
+                    <p className='font-medium'><span className='font-semibold'>Sex:</span> {watch.sex}</p>
                     <p className='text-2xl font-semibold text-green-600'>${watch.price}</p>
                     <button
                         onClick={() => addProduct(watch._id, watch.price)}

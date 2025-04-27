@@ -59,7 +59,7 @@ function User() {
     return (
         <div className='px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-10'>
             <h1 className='text-3xl font-semibold text-gray-800 mb-8 text-center sm:text-left'>User</h1>
-            <div className='bg-neutral-50 border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6 mb-7'>
+            <div className='bg-neutral-50 rounded-xl shadow-sm p-4 sm:p-6 mb-7'>
                 <h2 className='text-xl font-semibold text-gray-800 mb-6'>Profile</h2>
                 <div className='grid gap-x-6 gap-y-4 sm:grid-cols-2 text-sm sm:text-base text-gray-700'>
                     <div>
@@ -87,7 +87,7 @@ function User() {
                         No orders yet.
                     </div>}
                     {orders.map(order => (
-                        <OrderCard order={order} />
+                        <OrderCard order={order} role={user.role} />
                     ))}
                 </div>
                 <div className='text-center mt-6 flex items-center justify-center gap-4'>
@@ -164,7 +164,7 @@ function UserOrder() {
             <h2 className='text-3xl font-semibold text-gray-800 mb-8 text-center sm:text-left'>
                 Order
             </h2>
-            <div className='bg-neutral-50 border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6 mb-7'>
+            <div className='bg-neutral-50 rounded-xl shadow-sm p-4 sm:p-6 mb-7'>
                 <h2 className="text-xl font-semibold text-gray-800 mb-4">Order info</h2>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm sm:text-base text-gray-700 mb-6'>
                     <div>

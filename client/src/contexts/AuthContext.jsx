@@ -63,50 +63,50 @@ export const AuthProvider = ({ children }) => {
             });
     }
 
-const refresh = () => {
-    fetch(`${apiUrl}/auth/refresh`, {
-        method: 'POST',
-        credentials: 'include'
-    })
-        .then(res => res.json())
-        .then(data => {
-            if (!data.refreshed) logout();
+    const refresh = () => {
+        fetch(`${apiUrl}/auth/refresh`, {
+            method: 'POST',
+            credentials: 'include'
         })
-        .catch(() => {
-            logout();
+            .then(res => res.json())
+            .then(data => {
+                if (!data.refreshed) logout();
+            })
+            .catch(() => {
+                logout();
+            })
+    }
+
+    const logout = () => {
+        setUser(null);
+        clearCart();
+        localStorage.removeItem('cart');
+        fetch(`${apiUrl}/auth/logout`, {
+            method: 'POST',
+            credentials: 'include'
         })
-}
+    }
 
-const logout = () => {
-    setUser(null);
-    clearCart();
-    localStorage.removeItem('cart');
-    fetch(`${apiUrl}/auth/logout`, {
-        method: 'POST',
-        credentials: 'include'
-    })
-}
+    useEffect(() => {
+        status();
+        const interval = setInterval(() => {
+            refresh();
+        }, 1000 * 60 * 5);
+        return () => clearInterval(interval);
+    }, []);
 
-useEffect(() => {
-    status();
-    const interval = setInterval(() => {
-        refresh();
-    }, 1000 * 60 * 5);
-    return () => clearInterval(interval);
-}, []);
-
-return (
-    <AuthContext.Provider value={{
-        user,
-        setUser,
-        loading,
-        register,
-        login,
-        status,
-        refresh,
-        logout
-    }} >
-        {children}
-    </AuthContext.Provider>
-);
+    return (
+        <AuthContext.Provider value={{
+            user,
+            setUser,
+            loading,
+            register,
+            login,
+            status,
+            refresh,
+            logout
+        }} >
+            {children}
+        </AuthContext.Provider>
+    );
 };

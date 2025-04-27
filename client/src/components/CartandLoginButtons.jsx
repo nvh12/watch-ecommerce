@@ -46,7 +46,7 @@ function CartandLoginButtons({ className = '' }) {
                         {user ? (
                             <>
                                 <button
-                                    onClick={() => handleNavigate('/user')}
+                                    onClick={() => user.role === 'admin' ? handleNavigate('/admin') : handleNavigate('/user')}
                                     className='w-full text-left px-4 py-2 hover:bg-gray-100'
                                 >
                                     {user.name}

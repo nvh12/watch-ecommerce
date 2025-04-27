@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-function OrderCard({ order }) {
+function OrderCard({ order, role }) {
     const navigate = useNavigate();
     const itemQuantity = order.items.reduce((total, item) => total + item.quantity, 0);
     return (
@@ -26,7 +26,7 @@ function OrderCard({ order }) {
                     {order.status}
                 </span>
                 <button
-                    onClick={() => navigate(`/user/order/${order._id}`)}
+                    onClick={() => navigate(`/${role}/order/${order._id}`)}
                     className="mt-9 bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm hover:bg-gray-300 transition-colors"
                 >View Details</button>
             </div>

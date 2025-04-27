@@ -117,12 +117,12 @@ function Login() {
                 <div>
                     <label htmlFor='identifier' className='block text-sm text-gray-600 mb-1'>Email or Username:</label>
                     <input type='text' id='identifier' name='identifier' value={formData.identifier} onChange={handleChange}
-                        className='w-full p-2 border border-gray-300 rounded-lg bg-neutral-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400  transition' />
+                        className='w-full p-2 border border-gray-300 rounded-lg bg-neutral-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                 </div>
                 <div>
                     <label htmlFor='password' className='block text-sm text-gray-600 mb-1'>Password:</label>
                     <input type='password' id='password' name='password' value={formData.password} onChange={handleChange}
-                        className='w-full p-2 border border-gray-300 rounded-lg bg-neutral-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400  transition' />
+                        className='w-full p-2 border border-gray-300 rounded-lg bg-neutral-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                 </div>
                 <a href='/auth/register' className='underline hover:opacity-80'>Don't have an account? Register</a>
                 <div className='flex justify-end'>
