@@ -17,9 +17,9 @@ async function addProduct(req, res) {
 async function updateProduct(req, res) {
     try {
         const { id } = req.params;
-        const { updateData } = req.body;
+        const updateData = req.body;
         const product = await watchServices.updateWatch(id, updateData);
-        res.status(200).json({ status: 'success', product: product })
+        res.status(200).json({ status: 'success', watch: product })
     } catch (error) {
         res.status(500).json({ status: 'error', error: error.message });
     }
@@ -82,7 +82,7 @@ async function singleOrder(req, res) {
 async function updateOrder(req, res) {
     try {
         const { id } = req.params;
-        const { updateData } = req.body;
+        const updateData = req.body;
         const order = await orderServices.updateOrder(id, updateData);
         res.status(200).json({ status: 'success', order: order })
     } catch (error) {

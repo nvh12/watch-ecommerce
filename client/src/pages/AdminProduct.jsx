@@ -39,6 +39,13 @@ function ProductList() {
     return (
         <div className='px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-10'>
             <h1 className='text-3xl font-semibold text-gray-800 mb-8 text-center sm:text-left'>Product management</h1>
+            <div className="flex justify-end mb-4">
+                <button
+                    onClick={() => navigate('/admin/product/create')} 
+                    className='bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm hover:bg-gray-300 transition-colors'>
+                    Add Product
+                </button>
+            </div>
             {watches.map((watch) => (
                 <div key={watch.watch_id}
                     className='md:mx-15 my-1 p-4 shadow-sm bg-neutral-50 rounded-lg flex flex-col sm:flex-row items-start sm:items-center transform transition-transform duration-300 ease-in-out hover:scale-101 hover:-translate-y-1 hover:shadow-md'>
@@ -97,7 +104,7 @@ function ManageProduct() {
 
     const handleSave = async () => {
         try {
-            const response = await fetch(`${apiUrl}/admin/product/${id}`, {
+            const response = await fetch(`${apiUrl}/admin/product/${watch._id}`, {
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 method: 'PUT',
@@ -140,7 +147,7 @@ function ManageProduct() {
 
     return (
         <div className='px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-10'>
-            {!editing ? (
+            {!(watch && watch.name && editing) ? (
                 <div className='bg-neutral-50 rounded-xl shadow-sm p-4 sm:p-6 mb-7'>
                     <h2 className='text-xl font-semibold text-gray-800 mb-6'>{watch.name}</h2>
                     <div className='flex flex-col sm:flex-row space-x-5 space-y-5'>
@@ -170,7 +177,7 @@ function ManageProduct() {
                 </div>
             ) : (
                 <div className='bg-neutral-50 rounded-xl shadow-sm p-4 sm:p-6 mb-7'>
-                    <h2 className='text-xl font-semibold text-gray-800 mb-6'>Edit watch</h2>
+                    <h2 className='text-xl font-semibold text-gray-800 mb-6'>Edit product</h2>
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
                         <div>
                             <label className='block text-sm font-medium text-gray-700 mb-1'>Name</label>
@@ -214,10 +221,9 @@ function ManageProduct() {
                         </div>
                         <div>
                             <label className='block text-sm font-medium text-gray-700 mb-1'>Sex</label>
-                            <select name='sex' value={editData.sex} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition'>
-                                <option>Men</option>
-                                <option>Women</option>
-                                <option>Unisex</option>
+                            <select name='sex' defaultValue={editData.sex} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition'>
+                                <option value='Men'>Men</option>
+                                <option value='Women'>Women</option>
                             </select>
                         </div>
                     </div>
@@ -265,4 +271,145 @@ function ManageProduct() {
     )
 }
 
-export { ProductList, ManageProduct };
+function CreateProduct() {
+    const navigate = useNavigate();
+    const { user, loading } = useAuth();
+    const [editData, setEditData] = useState({});
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setEditData({ ...editData, [name]: value });
+    }
+
+    const handleSave = async () => {
+        try {
+            const response = await fetch(`${apiUrl}/admin/product`, {
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                method: 'POST',
+                body: JSON.stringify(editData)
+            });
+            const result = await response.json();
+            if (result.status === 'success') {
+                setWatch(result.watch);
+            }
+        } catch (error) {
+            console.error('Failed to update:', error);
+        }
+        setEditing(false);
+        navigate('/admin/product');
+    }
+
+    const handleImageUrlChange = (index, newValue) => {
+        const updatedUrls = [...editData.image_url];
+        updatedUrls[index] = newValue;
+        setEditData({ ...editData, image_url: updatedUrls });
+    };
+
+    const handleAddImageUrl = () => {
+        setEditData({ ...editData, image_url: [...(editData.image_url || []), ''] });
+    };
+
+    const handleRemoveImageUrl = (index) => {
+        const updatedUrls = [...editData.image_url];
+        updatedUrls.splice(index, 1);
+        setEditData({ ...editData, image_url: updatedUrls });
+    };
+
+    return (
+        <div className='px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-10'>
+            <div className='bg-neutral-50 rounded-xl shadow-sm p-4 sm:p-6 mb-7'>
+                <h2 className='text-xl font-semibold text-gray-800 mb-6'>Create product</h2>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-1'>Name</label>
+                        <input name='name' value={editData.name} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                    </div>
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-1'>Brand</label>
+                        <input name='brand' value={editData.brand} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                    </div>
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-1'>Model</label>
+                        <input name='model' value={editData.model} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                    </div>
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-1'>Reference</label>
+                        <input name='ref' value={editData.ref} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                    </div>
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-1'>Movement</label>
+                        <input name='mvmt' value={editData.mvmt} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                    </div>
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-1'>Case Material</label>
+                        <input name='casem' value={editData.casem} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                    </div>
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-1'>Bracelet Material</label>
+                        <input name='bracem' value={editData.bracem} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                    </div>
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-1'>Price ($)</label>
+                        <input name='price' type='number' value={editData.price} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                    </div>
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-1'>Stock</label>
+                        <input name='stock' type='number' value={editData.stock} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                    </div>
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-1'>Sold</label>
+                        <input name='sold' type='number' value={editData.sold} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                    </div>
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-1'>Sex</label>
+                        <select name='sex' defaultValue={editData.sex} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition'>
+                            <option value='Men'>Men</option>
+                            <option value='Women'>Women</option>
+                        </select>
+                    </div>
+                </div>
+                <div className='mt-6'>
+                    <label className='block text-sm font-medium text-gray-700 mb-1'>Image URLs</label>
+                    <div className='space-y-3'>
+                        {editData.image_url?.map((url, index) => (
+                            <div key={index} className='flex gap-2'>
+                                <input
+                                    type='text'
+                                    value={url}
+                                    onChange={(e) => handleImageUrlChange(index, e.target.value)}
+                                    className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition'
+                                />
+                                <button
+                                    type='button'
+                                    onClick={() => handleRemoveImageUrl(index)}
+                                    className='bg-red-300 text-red-700 px-3 py-1.5 rounded text-sm hover:bg-red-400 transition-colors'
+                                >
+                                    <FaTrash />
+                                </button>
+                            </div>
+                        ))}
+                        <button
+                            type='button'
+                            onClick={handleAddImageUrl}
+                            className='mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg'
+                        >
+                            Add Image URL
+                        </button>
+                    </div>
+                </div>
+                <div className='mt-6'>
+                    <label className='block text-sm font-medium text-gray-700 mb-1'>Description</label>
+                    <textarea name='description' value={editData.description} onChange={handleChange} rows='4' className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                </div>
+
+                <div className='flex gap-4 mt-8'>
+                    <button onClick={handleSave} className='bg-green-600 text-white px-5 py-2 rounded text-sm mt-1 hover:bg-green-700'>Save</button>
+                    <button onClick={() => setEditing(false)} className='bg-gray-200 text-gray-700 px-5 py-2 rounded text-sm mt-1 hover:bg-gray-300 transition-colors'>Cancel</button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export { ProductList, ManageProduct, CreateProduct };

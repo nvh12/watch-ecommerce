@@ -113,18 +113,19 @@ function ManageOrder() {
 
     const handleSave = async () => {
         try {
-            editData = {
+            const payload = {
                 ...editData,
                 items: order.items.map(item => ({
-                    ...item,
-                    product: item.product.id
+                    product: item.product._id,
+                    price: item.price,
+                    quantity: item.quantity,
                 }))
             };
             const response = await fetch(`${apiUrl}/admin/order/${id}`, {
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 method: 'PUT',
-                body: JSON.stringify(editData)
+                body: JSON.stringify(payload)
             });
             const result = await response.json();
             if (result.status === 'success') {
@@ -197,11 +198,17 @@ function ManageOrder() {
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10'>
                         <div>
                             <label className='block text-sm font-medium text-gray-700 mb-1'>Payment</label>
-                            <input name='payment' value={editData.payment} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                            <select name='payment' value={editData.payment} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition'>
+                                <option value='cash'>Cash</option>
+                                <option value='transfer'>Transfer</option>
+                            </select>
                         </div>
                         <div>
                             <label className='block text-sm font-medium text-gray-700 mb-1'>Delivery</label>
-                            <input name='delivery' value={editData.delivery} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                            <select name='delivery' value={editData.delivery} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition'>
+                                <option value='store'>Store</option>
+                                <option value='delivery'>Delivery</option>
+                            </select>
                         </div>
                         <div>
                             <label className='block text-sm font-medium text-gray-700 mb-1'>Address<address></address></label>
@@ -209,7 +216,11 @@ function ManageOrder() {
                         </div>
                         <div>
                             <label className='block text-sm font-medium text-gray-700 mb-1'>Status</label>
-                            <input name='status' value={editData.status} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                            <select name='status' value={editData.status} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition'>
+                                <option value='processing'>Processing</option>
+                                <option value='completed'>Completed</option>
+                                <option value='cancelled'>Cancelled</option>
+                            </select>
                         </div>
                     </div>
                     <div>
