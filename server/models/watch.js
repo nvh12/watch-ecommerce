@@ -21,17 +21,17 @@ const watchSchema = new mongoose.Schema({
 
 watchSchema.pre('save', async function (next) {
     if (!this.isNew) return next();
-    try {
-        const counter = await Counter.findOneAndUpdate(
-            { name: 'watch_id' },
-            { $inc: { value: 1 } },
-            { new: true, upsert: true }
-        );
-        this.watch_id = counter.value;
-        next();
-    } catch (error) {
-        next(error);
-    }
+        try {
+            const counter = await Counter.findOneAndUpdate(
+                { name: 'watch_id' },
+                { $inc: { value: 1 } },
+                { new: true, upsert: true }
+            );
+            this.watch_id = counter.value;
+            next();
+        } catch (error) {
+            next(error);
+        }
 });
 
 module.exports = mongoose.model('Watch', watchSchema, 'Watches');

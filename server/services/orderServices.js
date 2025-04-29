@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Order = require('../models/order');
-const order = require('../models/order');
+const Watch = require('../models/watch');
 
 async function getOrder(id) {
     try {
@@ -46,11 +46,11 @@ async function getOrdersByUser(userId, page = 1, limit = 20, sortBy = null, orde
     }
 }
 
-async function getOrderNumber(userId='') {
+async function getOrderNumber(userId = '') {
     try {
         if (userId) {
             const id = new mongoose.Types.ObjectId(`${userId}`);
-            return await Order.countDocuments({user: id});
+            return await Order.countDocuments({ user: id });
         } else {
             return await Order.countDocuments({});
         }
@@ -62,8 +62,20 @@ async function getOrderNumber(userId='') {
 async function updateOrder(id, updateData) {
     try {
         const orderId = new mongoose.Types.ObjectId(`${id}`);
+        const order = await Order.findById(orderId);
+        if (!order) {
+            throw new Error('Order not found');
+        }
+        if (updateData.status === 'cancelled' && order.status !== 'cancelled') {
+            for (const item of order.items) {
+                const watch = await Watch.findById(item.product);
+                watch.stock += item.quantity;
+                watch.sold -= item.quantity;
+                await watch.save();
+            }
+        }
         return await Order.findOneAndUpdate(
-            { _id: orderId },         
+            { _id: orderId },
             updateData,
             { new: true, runValidators: true }
         );

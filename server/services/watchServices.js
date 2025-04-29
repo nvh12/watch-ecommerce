@@ -55,6 +55,12 @@ async function addWatch(info) {
 async function updateWatch(id, updateData) {
     try {
         const watchId = new mongoose.Types.ObjectId(`${id}`);
+        if ('sold' in updateData && updateData.sold < 0) {
+            throw new Error('Sold quantity must not be smaller than 0.');
+        }
+        if ('stock' in updateData && updateData.stock < 0) {
+            throw new Error('Stock quantity must not be smaller than 0.');
+        }
         return await Watch.findOneAndUpdate(
             { _id: watchId },        
             updateData,

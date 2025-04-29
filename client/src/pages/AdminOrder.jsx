@@ -112,6 +112,7 @@ function ManageOrder() {
     }
 
     const handleSave = async () => {
+        if (order.status === 'completed' || order.status === 'cancelled') return;
         try {
             const payload = {
                 ...editData,
