@@ -39,39 +39,43 @@ function ProductList() {
     return (
         <div className='px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-10'>
             <h1 className='text-3xl font-semibold text-gray-800 mb-8 text-center sm:text-left'>Product management</h1>
-            <div className="flex justify-end mb-4">
-                <button
-                    onClick={() => navigate('/admin/product/create')} 
-                    className='bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm hover:bg-gray-300 transition-colors'>
-                    Add Product
-                </button>
-            </div>
-            {watches.map((watch) => (
-                <div key={watch.watch_id}
-                    className='md:mx-15 my-1 p-4 shadow-sm bg-neutral-50 rounded-lg flex flex-col sm:flex-row items-start sm:items-center transform transition-transform duration-300 ease-in-out hover:scale-101 hover:-translate-y-1 hover:shadow-md'>
-                    <div className='w-1/3 sm:w-1/4 flex justify-center sm:justify-start'>
-                        <img src={watch.image_url[0]} alt={watch.name}
-                            className='w-24 h-24 md:w-32 md:h-32 object-cover rounded-md'
-                        />
-                    </div>
-                    <div className='w-2/3 sm:w-3/4 flex-grow justify-between ml-5 sm:ml-10'>
-                        <h3 className='text-md sm:text-lg font-semibold mt-0 line-clamp'>{watch.name}</h3>
-                        <p className='text-gray-500 text-xs md:text-md'>Brand: {watch.brand}</p>
-                        <div className='flex items-center justify-between mt-2'>
-                            <p className='text-green-600 font-semibold text-sm md:text-base'>${watch.price}</p>
-                            <p className='text-sm md:text-base'>Stock: {watch.stock}</p>
-                            <p className='text-sm md:text-base'>Sold: {watch.sold}</p>
-                        </div>
-                        <div className='flex items-center mt-3'>
-                            <button
-                                onClick={() => navigate(`/admin/product/${watch.watch_id}`)}
-                                className='bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm hover:bg-gray-300 transition-colors'>
-                                View Details
-                            </button>
-                        </div>
-                    </div>
+            <div className='bg-neutral-50 rounded-xl shadow-sm p-4 sm:p-6 mb-7'>
+                <div className="flex justify-end mb-4">
+                    <button
+                        onClick={() => navigate('/admin/product/create')}
+                        className='bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm hover:bg-gray-300 transition-colors'>
+                        Add Product
+                    </button>
                 </div>
-            ))}
+                <div className='grid gap-4 grid-row'>
+                {watches.map((watch) => (
+                    <div key={watch.watch_id}
+                        className='rounded-lg p-4 bg-neutral-50 shadow-sm flex flex-row justify-between gap-4 items-start sm:items-center transform transition-transform duration-300 ease-in-out hover:scale-101 hover:-translate-y-1 hover:shadow-md'>
+                        <div className='w-1/3 sm:w-1/4 flex justify-center sm:justify-start'>
+                            <img src={watch.image_url[0]} alt={watch.name}
+                                className='w-24 h-24 md:w-32 md:h-32 object-cover rounded-md'
+                            />
+                        </div>
+                        <div className='w-2/3 sm:w-3/4 flex-grow justify-between ml-5 sm:ml-10'>
+                            <h3 className='text-md sm:text-lg font-semibold mt-0 line-clamp'>{watch.name}</h3>
+                            <p className='text-gray-500 text-xs md:text-md'>Brand: {watch.brand}</p>
+                            <div className='flex items-center justify-between mt-2'>
+                                <p className='text-green-600 font-semibold text-sm md:text-base'>${watch.price}</p>
+                                <p className='text-sm md:text-base'>Stock: {watch.stock}</p>
+                                <p className='text-sm md:text-base'>Sold: {watch.sold}</p>
+                            </div>
+                            <div className='flex items-center mt-3'>
+                                <button
+                                    onClick={() => navigate(`/admin/product/${watch.watch_id}`)}
+                                    className='bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm hover:bg-gray-300 transition-colors'>
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+                </div>
+            </div>
         </div>
     )
 }
@@ -180,47 +184,47 @@ function ManageProduct() {
                     <h2 className='text-xl font-semibold text-gray-800 mb-6'>Edit product</h2>
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-1'>Name</label>
+                            <label className='block text-sm font-semibold text-gray-700 mb-1'>Name</label>
                             <input name='name' value={editData.name} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                         </div>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-1'>Brand</label>
+                            <label className='block text-sm font-semibold text-gray-700 mb-1'>Brand</label>
                             <input name='brand' value={editData.brand} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                         </div>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-1'>Model</label>
+                            <label className='block text-sm font-semibold text-gray-700 mb-1'>Model</label>
                             <input name='model' value={editData.model} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                         </div>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-1'>Reference</label>
+                            <label className='block text-sm font-semibold text-gray-700 mb-1'>Reference</label>
                             <input name='ref' value={editData.ref} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                         </div>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-1'>Movement</label>
+                            <label className='block text-sm font-semibold text-gray-700 mb-1'>Movement</label>
                             <input name='mvmt' value={editData.mvmt} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                         </div>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-1'>Case Material</label>
+                            <label className='block text-sm font-semibold text-gray-700 mb-1'>Case Material</label>
                             <input name='casem' value={editData.casem} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                         </div>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-1'>Bracelet Material</label>
+                            <label className='block text-sm font-semibold text-gray-700 mb-1'>Bracelet Material</label>
                             <input name='bracem' value={editData.bracem} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                         </div>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-1'>Price ($)</label>
+                            <label className='block text-sm font-semibold text-gray-700 mb-1'>Price ($)</label>
                             <input name='price' type='number' value={editData.price} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                         </div>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-1'>Stock</label>
+                            <label className='block text-sm font-semibold text-gray-700 mb-1'>Stock</label>
                             <input name='stock' type='number' value={editData.stock} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                         </div>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-1'>Sold</label>
+                            <label className='block text-sm font-semibold text-gray-700 mb-1'>Sold</label>
                             <input name='sold' type='number' value={editData.sold} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                         </div>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-1'>Sex</label>
+                            <label className='block text-sm font-semibold text-gray-700 mb-1'>Sex</label>
                             <select name='sex' defaultValue={editData.sex} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition'>
                                 <option value='Men'>Men</option>
                                 <option value='Women'>Women</option>
@@ -228,7 +232,7 @@ function ManageProduct() {
                         </div>
                     </div>
                     <div className='mt-6'>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>Image URLs</label>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Image URLs</label>
                         <div className='space-y-3'>
                             {editData.image_url?.map((url, index) => (
                                 <div key={index} className='flex gap-2'>
@@ -257,7 +261,7 @@ function ManageProduct() {
                         </div>
                     </div>
                     <div className='mt-6'>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>Description</label>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Description</label>
                         <textarea name='description' value={editData.description} onChange={handleChange} rows='4' className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                     </div>
 
@@ -274,7 +278,22 @@ function ManageProduct() {
 function CreateProduct() {
     const navigate = useNavigate();
     const { user, loading } = useAuth();
-    const [editData, setEditData] = useState({});
+    const [editData, setEditData] = useState({
+        name: '',
+        brand: '',
+        model: '',
+        ref: '',
+        mvmt: '',
+        casem: '',
+        bracem: '',
+        price: '',
+        stock: '',
+        sold: '',
+        sex: 'Men',
+        image_url: [],
+        description: '',
+    });
+    
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -296,7 +315,6 @@ function CreateProduct() {
         } catch (error) {
             console.error('Failed to update:', error);
         }
-        setEditing(false);
         navigate('/admin/product');
     }
 
@@ -322,55 +340,55 @@ function CreateProduct() {
                 <h2 className='text-xl font-semibold text-gray-800 mb-6'>Create product</h2>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>Name</label>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Name</label>
                         <input name='name' value={editData.name} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                     </div>
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>Brand</label>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Brand</label>
                         <input name='brand' value={editData.brand} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                     </div>
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>Model</label>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Model</label>
                         <input name='model' value={editData.model} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                     </div>
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>Reference</label>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Reference</label>
                         <input name='ref' value={editData.ref} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                     </div>
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>Movement</label>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Movement</label>
                         <input name='mvmt' value={editData.mvmt} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                     </div>
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>Case Material</label>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Case Material</label>
                         <input name='casem' value={editData.casem} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                     </div>
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>Bracelet Material</label>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Bracelet Material</label>
                         <input name='bracem' value={editData.bracem} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                     </div>
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>Price ($)</label>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Price ($)</label>
                         <input name='price' type='number' value={editData.price} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                     </div>
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>Stock</label>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Stock</label>
                         <input name='stock' type='number' value={editData.stock} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                     </div>
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>Sold</label>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Sold</label>
                         <input name='sold' type='number' value={editData.sold} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                     </div>
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>Sex</label>
-                        <select name='sex' defaultValue={editData.sex} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition'>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Sex</label>
+                        <select name='sex' value={editData.sex} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition'>
                             <option value='Men'>Men</option>
                             <option value='Women'>Women</option>
                         </select>
                     </div>
                 </div>
                 <div className='mt-6'>
-                    <label className='block text-sm font-medium text-gray-700 mb-1'>Image URLs</label>
+                    <label className='block text-sm font-semibold text-gray-700 mb-1'>Image URLs</label>
                     <div className='space-y-3'>
                         {editData.image_url?.map((url, index) => (
                             <div key={index} className='flex gap-2'>
@@ -399,13 +417,13 @@ function CreateProduct() {
                     </div>
                 </div>
                 <div className='mt-6'>
-                    <label className='block text-sm font-medium text-gray-700 mb-1'>Description</label>
+                    <label className='block text-sm font-semibold text-gray-700 mb-1'>Description</label>
                     <textarea name='description' value={editData.description} onChange={handleChange} rows='4' className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                 </div>
 
                 <div className='flex gap-4 mt-8'>
                     <button onClick={handleSave} className='bg-green-600 text-white px-5 py-2 rounded text-sm mt-1 hover:bg-green-700'>Save</button>
-                    <button onClick={() => setEditing(false)} className='bg-gray-200 text-gray-700 px-5 py-2 rounded text-sm mt-1 hover:bg-gray-300 transition-colors'>Cancel</button>
+                    <button onClick={() => navigate('/admin/product')} className='bg-gray-200 text-gray-700 px-5 py-2 rounded text-sm mt-1 hover:bg-gray-300 transition-colors'>Cancel</button>
                 </div>
             </div>
         </div>
