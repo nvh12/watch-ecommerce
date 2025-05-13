@@ -59,6 +59,26 @@ async function getOrderNumber(userId = '') {
     }
 }
 
+async function getTotalCost(userId = '') {
+    try {
+        let result;
+        if (userId) {
+            const id = new mongoose.Types.ObjectId(userId);
+            result = await Order.aggregate([
+                { $match: { user: id } },
+                { $group: { _id: null, totalCost: { $sum: '$total_price' } } }
+            ]);
+        } else {
+            result = await Order.aggregate([
+                { $group: { _id: null, totalCost: { $sum: '$total_price' } } }
+            ]);
+        }
+        return result.length > 0 ? result[0].totalCost : 0;
+    } catch (error) {
+        throw error;
+    }
+}
+
 async function updateOrder(id, updateData) {
     try {
         const orderId = new mongoose.Types.ObjectId(`${id}`);
@@ -89,5 +109,6 @@ module.exports = {
     getAllOrders,
     getOrdersByUser,
     getOrderNumber,
+    getTotalCost,
     updateOrder
 }

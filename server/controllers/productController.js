@@ -16,6 +16,16 @@ async function product(req, res) {
     }
 }
 
+async function getNumber(req, res) {
+    try {
+        const number = await watchServices.getWatchNumber();
+        res.status(200).json({ number: number, status: 'success' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = {
-    product
+    product,
+    getNumber
 };

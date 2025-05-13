@@ -12,6 +12,7 @@ function ProductList() {
     const [watches, setWatches] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
+    const [watchNumber, setWatchNumber] = useState(0);
 
     const fetchProducts = async () => {
         try {
@@ -22,6 +23,9 @@ function ProductList() {
                 setTotalPages(result.totalPages);
                 setCurrentPage(result.page);
             }
+            const res = await fetch(`${apiUrl}/product/number`);
+            const data = await res.json();
+            setWatchNumber(data.number);
         } catch (error) {
             console.error('Failed to fetch:', error);
         }
@@ -34,11 +38,14 @@ function ProductList() {
         else {
             fetchProducts();
         }
-    }, [user, loading]);
+    }, [user, loading, currentPage]);
 
     return (
         <div className='px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-10'>
             <h1 className='text-3xl font-semibold text-gray-800 mb-8 text-center sm:text-left'>Product management</h1>
+            <p className='text-gray-600 mb-4'>
+                Total watches: <span className='font-medium'>{watchNumber}</span>
+            </p>
             <div className='bg-neutral-50 rounded-xl shadow-sm p-4 sm:p-6 mb-7'>
                 <div className="flex justify-end mb-4">
                     <button
@@ -48,36 +55,64 @@ function ProductList() {
                     </button>
                 </div>
                 <div className='grid gap-4 grid-row'>
-                {watches.map((watch) => (
-                    <div key={watch.watch_id}
-                        className='rounded-lg p-4 bg-neutral-50 shadow-sm flex flex-row justify-between gap-4 items-start sm:items-center transform transition-transform duration-300 ease-in-out hover:scale-101 hover:-translate-y-1 hover:shadow-md'>
-                        <div className='w-1/3 sm:w-1/4 flex justify-center sm:justify-start'>
-                            <img src={watch.image_url[0]} alt={watch.name}
-                                className='w-24 h-24 md:w-32 md:h-32 object-cover rounded-md'
-                            />
-                        </div>
-                        <div className='w-2/3 sm:w-3/4 flex-grow justify-between ml-5 sm:ml-10'>
-                            <h3 className='text-md sm:text-lg font-semibold mt-0 line-clamp'>{watch.name}</h3>
-                            <p className='text-gray-500 text-xs md:text-md'>Brand: {watch.brand}</p>
-                            <div className='flex items-center justify-between mt-2'>
-                                <p className='text-green-600 font-semibold text-sm md:text-base'>${watch.price}</p>
-                                <p className='text-sm md:text-base'>Stock: {watch.stock}</p>
-                                <p className='text-sm md:text-base'>Sold: {watch.sold}</p>
+                    {watches.map((watch) => (
+                        <div key={watch.watch_id}
+                            className='rounded-lg p-4 bg-neutral-50 shadow-sm flex flex-row justify-between gap-4 items-start sm:items-center transform transition-transform duration-300 ease-in-out hover:scale-101 hover:-translate-y-1 hover:shadow-md'>
+                            <div className='w-1/3 sm:w-1/4 flex justify-center sm:justify-start'>
+                                <img src={watch.image_url[0]} alt={watch.name}
+                                    className='w-24 h-24 md:w-32 md:h-32 object-cover rounded-md'
+                                />
                             </div>
-                            <div className='flex items-center mt-3'>
-                                <button
-                                    onClick={() => navigate(`/admin/product/${watch.watch_id}`)}
-                                    className='bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm hover:bg-gray-300 transition-colors'>
-                                    View Details
-                                </button>
+                            <div className='w-2/3 sm:w-3/4 flex-grow justify-between ml-5 sm:ml-10'>
+                                <h3 className='text-md sm:text-lg font-semibold mt-0 line-clamp'>{watch.name}</h3>
+                                <p className='text-gray-500 text-xs md:text-md'>Brand: {watch.brand}</p>
+                                <div className='flex items-center justify-between mt-2'>
+                                    <p className='text-green-600 font-semibold text-sm md:text-base'>${watch.price}</p>
+                                    <p className='text-sm md:text-base'>Stock: {watch.stock}</p>
+                                    <p className='text-sm md:text-base'>Sold: {watch.sold}</p>
+                                </div>
+                                <div className='flex items-center mt-3'>
+                                    <button
+                                        onClick={() => navigate(`/admin/product/${watch.watch_id}`)}
+                                        className='bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm hover:bg-gray-300 transition-colors'>
+                                        View Details
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
+                <div className='text-center mt-6 flex items-center justify-center gap-4'>
+                    <button
+                        disabled={currentPage <= 1}
+                        onClick={() => setCurrentPage(currentPage - 1)}
+                        className={`px-4 py-2 rounded-lg text-sm transition-colors duration-200 
+                            ${currentPage <= 1
+                                ? 'bg-gray-200 text-gray-400'
+                                : 'bg-neutral-100 hover:bg-neutral-200 text-gray-700 shadow-sm'}`}
+                    >
+                        Previous
+                    </button>
+
+                    <span className='text-sm text-gray-600'>
+                        Page <span className='font-medium'>{currentPage}</span> of{' '}
+                        <span className='font-medium'>{totalPages}</span>
+                    </span>
+
+                    <button
+                        disabled={currentPage >= totalPages}
+                        onClick={() => setCurrentPage(currentPage + 1)}
+                        className={`px-4 py-2 rounded-lg text-sm transition-colors duration-200 
+                            ${currentPage >= totalPages
+                                ? 'bg-gray-200 text-gray-400'
+                                : 'bg-neutral-100 hover:bg-neutral-200 text-gray-700 shadow-sm'}`}
+                    >
+                        Next
+                    </button>
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 function ManageProduct() {
@@ -293,7 +328,7 @@ function CreateProduct() {
         image_url: [],
         description: '',
     });
-    
+
 
     const handleChange = (event) => {
         const { name, value } = event.target;

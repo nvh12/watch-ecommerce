@@ -11,6 +11,9 @@ function User() {
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
     const [orders, setOrders] = useState([]);
+    const [totalOrders, setTotalOrders] = useState(0);
+    const [totalCost, setTotalCost] = useState(0);
+
     const navigate = useNavigate();
     const { user, loading } = useAuth();
 
@@ -36,6 +39,8 @@ function User() {
             if (result.status === 'success') {
                 setOrders(result.data);
                 setTotalPages(result.totalPages);
+                setTotalOrders(result.totalOrders ?? 0);
+                setTotalCost(result.totalCost ?? 0);
             }
         } catch (error) {
             console.error('Failed to fetch user:', error);
@@ -77,6 +82,14 @@ function User() {
                     <div>
                         <p className='font-medium text-gray-500'>Joined At</p>
                         <p>{userData.createdAt ? new Date(userData.createdAt).toLocaleString() : '—'}</p>
+                    </div>
+                    <div>
+                        <p className='font-medium text-gray-500'>Total Spent</p>
+                        <p className='text-green-600'>${totalCost.toLocaleString()}</p>
+                    </div>
+                    <div>
+                        <p className='font-medium text-gray-500'>Total Orders</p>
+                        <p>{totalOrders}</p>
                     </div>
                 </div>
             </div>
@@ -136,6 +149,7 @@ function UserOrder() {
         status: '',
         createdAt: ''
     });
+    const [totalCost, setTotalCost] = useState(0);
 
     const fetchOrder = async (id) => {
         try {

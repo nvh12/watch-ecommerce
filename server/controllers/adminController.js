@@ -8,7 +8,7 @@ async function addProduct(req, res) {
     try {
         const { watch } = req.body;
         const product = await watchServices.addWatch(watch);
-        res.status(201).json({ status: 'success', product: product })
+        res.status(201).json({ status: 'success', product: product });
     } catch (error) {
         res.status(500).json({ status: 'error', error: error.message });
     }
@@ -19,7 +19,7 @@ async function updateProduct(req, res) {
         const { id } = req.params;
         const updateData = req.body;
         const product = await watchServices.updateWatch(id, updateData);
-        res.status(200).json({ status: 'success', watch: product })
+        res.status(200).json({ status: 'success', watch: product });
     } catch (error) {
         res.status(500).json({ status: 'error', error: error.message });
     }
@@ -53,8 +53,11 @@ async function getOrders(req, res) {
                 message: 'No orders found'
             });
         }
+        const totalCost = await orderServices.getTotalCost();
         const orders = await orderServices.getAllOrders(page, 20, sortBy, order);
         res.status(200).json({
+            totalOrders: total,
+            totalCost: totalCost,
             totalPages: Math.ceil(total / 20),
             page: page,
             order: order,
@@ -73,7 +76,7 @@ async function singleOrder(req, res) {
         if (!order) {
             return res.status(404).json({ status: 'error', error: 'Order not found' });
         }
-        res.status(200).json({status: 'success', order: order});
+        res.status(200).json({ status: 'success', order: order });
     } catch (error) {
         res.status(500).json({ status: 'error', error: error.message || 'Something went wrong' });
     }
@@ -84,7 +87,7 @@ async function updateOrder(req, res) {
         const { id } = req.params;
         const updateData = req.body;
         const order = await orderServices.updateOrder(id, updateData);
-                res.status(200).json({ status: 'success', order: order });
+        res.status(200).json({ status: 'success', order: order });
     } catch (error) {
         res.status(500).json({ status: 'error', error: error.message });
     }

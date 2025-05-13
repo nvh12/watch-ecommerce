@@ -27,12 +27,16 @@ async function userOrders(req, res) {
         if (total === 0) {
             return res.status(200).json({
                 status: 'success',
+                data: [],
                 message: 'No orders found'
             });
         }
+        const totalCost = await orderServices.getTotalCost(decoded.id);
         const limit = 5;
         const orders = await orderServices.getOrdersByUser(decoded.id, page, limit, sortBy, order);
         res.status(200).json({
+            totalOrders: total || 0,
+            totalCost: totalCost,
             totalPages: Math.ceil(total / limit),
             page: page,
             order: order,

@@ -11,6 +11,8 @@ function OrderList() {
     const [orders, setOrders] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalCost, setTotalCost] = useState(0);
+    const [totalOrders, setTotalOrders] = useState(0);
 
     const fetchOrders = async () => {
         try {
@@ -23,7 +25,11 @@ function OrderList() {
                 setOrders(result.data);
                 setTotalPages(result.totalPages);
                 setCurrentPage(result.page);
+                setTotalCost(result.totalCost ?? 0);
+                setTotalOrders(result.totalOrders);
+
             }
+            const res = await fetch(`${apiUrl}/`)
         } catch (error) {
             console.error('Failed to fetch:', error);
         }
@@ -41,6 +47,16 @@ function OrderList() {
     return (
         <div className='px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-10'>
             <h1 className='text-3xl font-semibold text-gray-800 mb-8 text-center sm:text-left'>Order management</h1>
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mb-7'>
+                <div className='bg-white rounded-lg shadow-sm p-4 sm:p-6 text-center'>
+                    <p className='text-sm text-gray-500 mb-1'>Total Revenue</p>
+                    <p className='text-2xl font-semibold text-green-600'>${totalCost.toLocaleString()}</p>
+                </div>
+                <div className='bg-white rounded-lg shadow-sm p-4 sm:p-6 text-center'>
+                    <p className='text-sm text-gray-500 mb-1'>Total Orders</p>
+                    <p className='text-2xl font-semibold text-gray-700'>{totalOrders}</p>
+                </div>
+            </div>
             <div className='bg-neutral-50 rounded-xl shadow-sm p-4 sm:p-6 mb-7'>
                 <div className='grid gap-4 grid-row'>
                     {(orders.length === 0) && <div className='w-full border border-dashed border-gray-300 rounded-lg p-4 text-center text-gray-400'>
@@ -192,6 +208,38 @@ function ManageOrder() {
                     <button onClick={() => setEditing(true)} className='mx-auto w-full bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm mt-1 hover:bg-gray-300 transition-colors'>
                         Edit
                     </button>
+                    <div className='mt-10 mb-5'>
+                        <h2 className='text-xl font-semibold text-gray-800 mb-6'>Items</h2>
+                        <div className='flex flex-col gap-3'>
+                            {order.items.map((item) => {
+                                return (
+                                    <div key={item.product.watch_id}
+                                        className='my-1 p-4 shadow-sm bg-neutral-50 rounded-lg flex flex-col sm:flex-row items-start sm:items-center transform transition-transform duration-300 ease-in-out hover:scale-101 hover:-translate-y-1 hover:shadow-md'>
+                                        <div className='w-1/3 sm:w-1/4 flex justify-center sm:justify-start'>
+                                            <img src={item.product.image_url[0]} alt={item.product.name}
+                                                className='w-24 h-24 md:w-32 md:h-32 object-cover rounded-md'
+                                            />
+                                        </div>
+                                        <div className='w-2/3 sm:w-3/4 flex-grow justify-between ml-5 sm:ml-10'>
+                                            <h3 className='text-md sm:text-lg font-semibold mt-0 line-clamp'>{item.product.name}</h3>
+                                            <p className='text-gray-500 text-xs md:text-md'>Brand: {item.product.brand}</p>
+                                            <div className='flex flex-col items-start justify-between my-2'>
+                                                <p className='text-sm text-gray-700'>Qty: {item.quantity}</p>
+                                                <p className='text-green-600 font-semibold text-sm md:text-base'>${item.price}</p>
+                                            </div>
+                                            <div className='flex space-x-2 mt-2 md:mt-0'>
+                                                <button
+                                                    onClick={() => navigate(`/product/${item.product.watch_id}`)}
+                                                    className='bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm hover:bg-gray-300 transition-colors'>
+                                                    View Details
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
                 </div>
             ) : (
                 <div className='bg-neutral-50 rounded-xl shadow-sm p-4 sm:p-6 mb-7'>
@@ -222,38 +270,6 @@ function ManageOrder() {
                                 <option value='completed'>Completed</option>
                                 <option value='cancelled'>Cancelled</option>
                             </select>
-                        </div>
-                    </div>
-                    <div>
-                        <h2 className='text-xl font-semibold text-gray-800 mb-6'>Items</h2>
-                        <div className='flex flex-col gap-3'>
-                            {order.items.map((item) => {
-                                return (
-                                    <div key={item.product.watch_id}
-                                        className='my-1 p-4 shadow-sm bg-neutral-50 rounded-lg flex flex-col sm:flex-row items-start sm:items-center transform transition-transform duration-300 ease-in-out hover:scale-101 hover:-translate-y-1 hover:shadow-md'>
-                                        <div className='w-1/3 sm:w-1/4 flex justify-center sm:justify-start'>
-                                            <img src={item.product.image_url[0]} alt={item.product.name}
-                                                className='w-24 h-24 md:w-32 md:h-32 object-cover rounded-md'
-                                            />
-                                        </div>
-                                        <div className='w-2/3 sm:w-3/4 flex-grow justify-between ml-5 sm:ml-10'>
-                                            <h3 className='text-md sm:text-lg font-semibold mt-0 line-clamp'>{item.product.name}</h3>
-                                            <p className='text-gray-500 text-xs md:text-md'>Brand: {item.product.brand}</p>
-                                            <div className='flex flex-col items-start justify-between my-2'>
-                                                <p className='text-sm text-gray-700'>Qty: {item.quantity}</p>
-                                                <p className='text-green-600 font-semibold text-sm md:text-base'>${item.price}</p>
-                                            </div>
-                                            <div className='flex space-x-2 mt-2 md:mt-0'>
-                                                <button
-                                                    onClick={() => navigate(`/product/${item.product.watch_id}`)}
-                                                    className='bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm hover:bg-gray-300 transition-colors'>
-                                                    View Details
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )
-                            })}
                         </div>
                     </div>
                     <div className='flex gap-4 mt-8'>
