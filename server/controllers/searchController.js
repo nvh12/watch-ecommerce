@@ -17,6 +17,7 @@ async function search(req, res) {
             totalPages: Math.ceil(total / 30), 
             page: page, order: order, 
             data: watches || [], 
+            totalWatches: total,
             status: 'success' });
     } catch (err) {
         res.status(500).json({ error: err.message });

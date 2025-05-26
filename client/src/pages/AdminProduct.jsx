@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FaTrash } from 'react-icons/fa6';
+import { FaTrash, FaMagnifyingGlass } from 'react-icons/fa6';
 import { useAuth } from '../contexts/AuthContext';
 import ImageGallery from '../components/ImageGallery';
 
@@ -13,10 +13,12 @@ function ProductList() {
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
     const [watchNumber, setWatchNumber] = useState(0);
+    const [search, setSearch] = useState('');
+    const [isSearching, setIsSearching] = useState(false);
 
-    const fetchProducts = async () => {
+    const fetchProducts = async (page = 1) => {
         try {
-            const response = await fetch(`${apiUrl}/browse?page=${currentPage}`);
+            const response = await fetch(`${apiUrl}/browse?page=${page}`);
             const result = await response.json();
             if (result.status === 'success') {
                 setWatches(result.data);
@@ -29,6 +31,22 @@ function ProductList() {
         } catch (error) {
             console.error('Failed to fetch:', error);
         }
+    };
+
+    const fetchSearch = async (page = 1) => {
+        try {
+            setCurrentPage(1);
+            const response = await fetch(`${apiUrl}/search?search=${search}&page=${page}`);
+            const result = await response.json();
+            if (result.status === 'success') {
+                setWatches(result.data);
+                setTotalPages(result.totalPages);
+                setCurrentPage(result.page);
+                setWatchNumber(result.totalWatches);
+            }
+        } catch (error) {
+            console.error('Failed to fetch:', error);
+        }
     }
 
     useEffect(() => {
@@ -36,7 +54,11 @@ function ProductList() {
         if (!user) navigate('/auth/login');
         else if (user.role !== 'admin') navigate('/');
         else {
-            fetchProducts();
+            if (isSearching) {
+                fetchSearch(currentPage);
+            } else {
+                fetchProducts(currentPage);
+            }
         }
     }, [user, loading, currentPage]);
 
@@ -46,7 +68,33 @@ function ProductList() {
             <p className='text-gray-600 mb-4'>
                 Total watches: <span className='font-medium'>{watchNumber}</span>
             </p>
-            <div className='bg-neutral-50 rounded-xl shadow-sm p-4 sm:p-6 mb-7'>
+            <form
+                onSubmit={(event) => {
+                    event.preventDefault();
+                    if (search.trim()) {
+                        setIsSearching(true);
+                        fetchSearch(1);
+                    } else {
+                        setIsSearching(false);
+                        fetchProducts(1);
+                    }
+                }}
+                className='mt-2 md:mt-0 w-full md:w-auto flex items-center bg-gray-200 text-gray-800 rounded-3xl px-2'>
+                <input
+                    type='text'
+                    value={search}
+                    onChange={(event) => setSearch(event.target.value)}
+                    placeholder='Search watches...'
+                    className='p-2 outline-none bg-transparent w-full md:w-96'
+                />
+                <button
+                    type='submit'
+                    className='p-2 ml-auto hover:bg-gray-300 rounded-full'
+                >
+                    <FaMagnifyingGlass />
+                </button>
+            </form>
+            <div className='bg-neutral-50 rounded-xl shadow-sm p-4 mt-4 sm:p-6 mb-7'>
                 <div className="flex justify-end mb-4">
                     <button
                         onClick={() => navigate('/admin/product/create')}
