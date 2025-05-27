@@ -5,6 +5,9 @@ const mongoose = require('mongoose');
 async function getCart(userId) {
     try {
         const userObjectId = new mongoose.Types.ObjectId(`${userId}`);
+        const cart = await Cart.findOne({ user: userObjectId });
+        cart.updatedAt = new Date();
+        await cart.save();
         return await Cart.findOne({ user: userObjectId }).populate('items.product');
     } catch (error) {
         throw error;

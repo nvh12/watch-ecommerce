@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Watch = require('../models/watch');
 
-async function getWatchByOjectId(id) {
+async function getWatchByObjectId(id) {
     try {
         const objectId = new mongoose.Types.ObjectId(`${id}`);
         return await Watch.findById(objectId);
@@ -89,7 +89,7 @@ async function deleteWatches(ids) {
 }
 
 module.exports = {
-    getWatchByOjectId,
+    getWatchByObjectId,
     getWatchById,
     getWatchesByName,
     getWatchesByFilters,

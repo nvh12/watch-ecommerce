@@ -5,7 +5,7 @@ async function product(req, res) {
         let { id } = req.params;
         let watch;
         if (id.length === 24) {
-            watch = await watchServices.getWatchByOjectId(id);
+            watch = await watchServices.getWatchByObjectId(id);
         } else {
             let watch_id = parseInt(id);
             watch = await watchServices.getWatchById(watch_id);

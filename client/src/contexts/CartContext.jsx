@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
 const CartContext = createContext();
 
 export const useCart = () => useContext(CartContext);
@@ -8,10 +10,26 @@ export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
 
     useEffect(() => {
-        const savedCart = localStorage.getItem('cart');
-        if (savedCart) {
-            setCart(JSON.parse(savedCart));
-        }
+        const loadCart = async () => {
+            const savedCart = localStorage.getItem('cart');
+            const parsedCart = JSON.parse(savedCart);
+            if (savedCart) {
+                for (const item of parsedCart) {
+                    try {
+                        const response = await fetch(`${apiUrl}/product/${item.product}`);
+                        const result = await response.json();
+                        if (result.status === 'success') {
+                            const watch = result.watch;
+                            item.price = watch.price * (1 - (watch.discount / 100));
+                        }
+                    } catch (error) {
+                        console.error(`Failed to fetch product ${item.product}:`, error);
+                    }
+                }
+                setCart(parsedCart);
+            }
+        };
+        loadCart();
     }, []);
 
     useEffect(() => {

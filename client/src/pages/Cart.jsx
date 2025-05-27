@@ -14,6 +14,7 @@ function Cart() {
 
     const loadData = async () => {
         let cartItems = [];
+        let combined = [];
         if (user) {
             try {
                 const response = await fetch(`${apiUrl}/cart`, {
@@ -26,20 +27,41 @@ function Cart() {
             } catch (error) {
                 console.error('Fetch failed:', error);
             }
+            try {
+                combined = cartItems.map((item) => ({
+                    product: item.product,
+                    quantity: item.quantity
+                }));
+                setItemList(combined);
+            } catch (error) {
+                console.error(error);
+            }
         } else {
             cartItems = cart;
+            try {
+                const resolvedItems = await Promise.all(
+                    cartItems.map(async (item) => {
+                        const response = await fetch(`${apiUrl}/product/${item.product}`);
+                        const result = await response.json();
+                        if (result.status === 'success') {
+                            return {
+                                product: result.watch,
+                                quantity: item.quantity
+                            };
+                        } else {
+                            console.error('Failed to fetch product:', item.product);
+                            return null;
+                        }
+                    })
+                );
+                combined = resolvedItems.filter(Boolean);
+                setItemList(combined);
+            } catch (error) {
+                console.error(error);
+            }
         }
-        try {
-            const combined = cartItems.map((item) => ({
-                product: item.product,
-                quantity: item.quantity
-            }));
-            setItemList(combined);
-            let newTotal = combined.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-            setTotal(newTotal);
-        } catch (error) {
-            console.error(error);
-        }
+        let newTotal = combined.reduce((sum, item) => sum + item.product.price * (1 - item.product.discount / 100), 0);
+        setTotal(newTotal);
     };
 
     const addProduct = async (itemId, price) => {
@@ -140,22 +162,34 @@ function Cart() {
                                     <h3 className='text-md sm:text-lg font-semibold mt-0 line-clamp'>{item.product.name}</h3>
                                     <p className='text-gray-500 text-xs md:text-md'>Brand: {item.product.brand}</p>
                                     <div className='flex items-center justify-between mt-2'>
-                                        <p className='text-green-600 font-semibold text-sm md:text-base'>${item.product.price}</p>
+                                        <div className='flex flex-col text-sm md:text-base'>
+                                            {item.product.discount > 0 ? (
+                                                <>
+                                                    <p className='text-gray-500 line-through'>${item.product.price.toFixed(2)}</p>
+                                                    <p className='text-green-600 font-semibold'>
+                                                        ${(item.product.price * (1 - item.product.discount / 100)).toFixed(2)}
+                                                        <span className='ml-1 text-xs text-red-500'>({item.product.discount}% off)</span>
+                                                    </p>
+                                                </>
+                                            ) : (
+                                                <p className='text-green-600 font-semibold'>${item.product.price.toFixed(2)}</p>
+                                            )}
+                                        </div>
                                         <div className='flex items-center mt-2 space-x-2'>
                                             <button
                                                 className='bg-gray-200 px-2 py-1 rounded hover:bg-gray-300 text-sm'
-                                                onClick={() => { reduceProduct(item.product._id, item.product.price) }}>
+                                                onClick={() => { reduceProduct(item.product._id, item.product.price * (1 - item.product.discount / 100)) }}>
                                                 -
                                             </button>
                                             <span className='text-sm'>{item.quantity}</span>
                                             <button
                                                 className='bg-gray-200 px-2 py-1 rounded hover:bg-gray-300 text-sm'
-                                                onClick={() => { addProduct(item.product._id, item.product.price) }}>
+                                                onClick={() => { addProduct(item.product._id, item.product.price * (1 - item.product.discount / 100)) }}>
                                                 +
                                             </button>
                                             <button
                                                 className='bg-red-300 text-red-700 px-3 py-1.5 rounded text-sm hover:bg-red-400 transition-colors'
-                                                onClick={() => { deleteProduct(item.product._id, item.product.price) }}>
+                                                onClick={() => { deleteProduct(item.product._id, item.product.price * (1 - item.product.discount / 100)) }}>
                                                 <FaTrash />
                                             </button>
                                         </div>
