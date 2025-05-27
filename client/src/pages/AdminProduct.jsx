@@ -223,6 +223,23 @@ function ManageProduct() {
         setEditData({ ...editData, image_url: updatedUrls });
     };
 
+    const handleDelete = async (ids) => {
+        try {
+            const response = await fetch(`${apiUrl}/admin/product`, {
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                method: 'DELETE',
+                body: JSON.stringify(ids)
+            });
+            const result = await response.json();
+            if (result.status === 'success') {
+                navigate('/admin/product');
+            }
+        } catch (error) {
+            console.error('Failed to update:', error);
+        }
+    };
+
     useEffect(() => {
         if (loading) return;
         if (!user) navigate('/auth/login');
@@ -258,6 +275,12 @@ function ManageProduct() {
                             <p>{watch.description}</p>
                             <button onClick={() => setEditing(true)} className='bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm mt-1 hover:bg-gray-300 transition-colors'>
                                 Edit
+                            </button>
+                            <button
+                                onClick={() => handleDelete([watch._id])}
+                                className='bg-red-300 text-red-700 px-3 py-1.5 rounded text-sm mt-1 hover:bg-red-400 transition-colors'
+                            >
+                                Delete
                             </button>
                         </div>
                     </div>

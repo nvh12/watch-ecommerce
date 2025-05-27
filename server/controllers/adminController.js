@@ -27,7 +27,10 @@ async function updateProduct(req, res) {
 
 async function deleteProducts(req, res) {
     try {
-        const { ids } = req.body;
+        const ids = req.body.ids || req.body;
+        if (!Array.isArray(ids) || ids.length === 0) {
+            return res.status(400).json({ status: 'error', error: 'Invalid product IDs' });
+        }
         const result = await watchServices.deleteWatches(ids);
         if (result.deletedCount === 0) {
             return res.status(404).json({ status: 'error', error: 'No products found' });
