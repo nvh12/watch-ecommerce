@@ -10,7 +10,7 @@ import Product from './pages/Product';
 import { Register, Login } from './pages/Authen';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
-import { User, UserOrder } from './pages/User';
+import { User, UserOrder, UserUpdate } from './pages/User';
 import Admin from './pages/Admin';
 import { ProductList, ManageProduct, CreateProduct } from './pages/AdminProduct';
 import { OrderList, ManageOrder } from './pages/AdminOrder';
@@ -32,6 +32,7 @@ function App() {
               <Route path='/cart/checkout' element={<Checkout />} />
               <Route path='/user' element={<User />} />
               <Route path='/user/order/:id' element={<UserOrder />} />
+              <Route path='/user/update' element={<UserUpdate />} />
               <Route path='/admin' element={<Admin />} />
               <Route path='/admin/product' element={<ProductList />} />
               <Route path='/admin/product/:id' element={<ManageProduct />} />

@@ -62,7 +62,20 @@ function Product() {
                     <p className='font-medium'><span className='font-semibold'>Case Material:</span> {watch.casem}</p>
                     <p className='font-medium'><span className='font-semibold'>Bracelet Material:</span> {watch.bracem}</p>
                     <p className='font-medium'><span className='font-semibold'>Sex:</span> {watch.sex}</p>
-                    <p className='text-2xl font-semibold text-green-600'>${watch.price}</p>
+                    {watch.discount > 0 ? (
+                        <>
+                            <p className='text-gray-500 line-through min-h-[1.25rem]'>${watch.price.toFixed(2)}</p>
+                            <p className='text-2xl text-green-600 font-semibold'>
+                                ${(watch.price * (1 - watch.discount / 100)).toFixed(2)}
+                                <span className='ml-1 text-md text-red-500'>({watch.discount}% off)</span>
+                            </p>
+                        </>
+                    ) : (
+                        <>
+                            <p className='text-gray-500 line-through min-h-[1.25rem]'></p>
+                            <p className='text-2xl text-green-600 font-semibold'>${watch.price.toFixed(2)}</p>
+                        </>
+                    )}
                     <button
                         onClick={() => addProduct(watch._id, watch.price)}
                         className='mt-4 w-full md:w-1/2 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition'

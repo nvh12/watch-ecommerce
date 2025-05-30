@@ -43,6 +43,26 @@ userSchema.pre('save', async function (next) {
     }
 });
 
+userSchema.pre('findByIdAndUpdate', async function (next) {
+    const update = this.getUpdate();
+    if (!update) return next();
+    const password = update.password;
+    if (!password || typeof password !== 'string' || password.startsWith('$2')) {
+        return next(); 
+    }
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashed = await bcrypt.hash(password, salt);
+        if (update.password) {
+            update.password = hashed;
+        }
+        this.setUpdate(update);
+        next();
+    } catch (err) {
+        next(err);
+    }
+});
+
 userSchema.methods.comparePassword = async function (password) {
     return await bcrypt.compare(password, this.password);
 }

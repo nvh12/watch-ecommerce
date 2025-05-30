@@ -27,7 +27,7 @@ function User() {
         } catch (error) {
             console.error('Failed to fetch user:', error);
         }
-    }
+    };
 
     const fetchOrders = async (page) => {
         try {
@@ -45,7 +45,7 @@ function User() {
         } catch (error) {
             console.error('Failed to fetch user:', error);
         }
-    }
+    };
 
     const changePage = async (newPage) => {
         fetchOrders(newPage);
@@ -149,7 +149,6 @@ function UserOrder() {
         status: '',
         createdAt: ''
     });
-    const [totalCost, setTotalCost] = useState(0);
 
     const fetchOrder = async (id) => {
         try {
@@ -253,4 +252,97 @@ function UserOrder() {
     )
 }
 
-export { User, UserOrder };
+function UserUpdate() {
+    const [editData, setEditData] = useState({});
+    const [userData, setUserData] = useState({});
+    const navigate = useNavigate();
+    const { user, loading } = useAuth();
+
+    const fetchUser = async () => {
+        try {
+            const response = await fetch(`${apiUrl}/user`, {
+                credentials: 'include'
+            });
+            const result = await response.json();
+            if (result.status === 'success') {
+                setUserData(result.data);
+                setEditData({
+                    name: result.data.name,
+                    email: result.data.email,
+                    password: '',
+                    newPassword: ''
+                });
+            }
+        } catch (error) {
+            console.error('Failed to fetch user:', error);
+        }
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setEditData({ ...editData, [name]: value });
+    };
+
+    const handleSave = async () => {
+        try {
+            const response = await fetch(`${apiUrl}/user/update`, {
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                method: 'PUT',
+                body: JSON.stringify(editData)
+            });
+            const result = await response.json();
+            if (result.status === 'success') {
+                setUser({
+                    id: result.data._id,
+                    name: result.data.name,
+                    email: result.data.email,
+                    role: result.data.role
+                });
+                setUserData(result.data);
+                navigate('/user');
+            }
+        } catch (error) {
+            console.error('Failed to update:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (loading) return;
+        if (!user) navigate('/auth/login');
+        else {
+            fetchUser();
+        }
+    }, [user, loading]);
+
+    return (
+        <div className='px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-10'>
+            <div className='bg-neutral-50 rounded-xl shadow-sm p-4 sm:p-6 mb-7'>
+                <h2 className='text-xl font-semibold text-gray-800 mb-6'>Update account</h2>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
+                    <div>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Username</label>
+                        <input name='name' value={editData.name} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                    </div>
+                    <div>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Email</label>
+                        <input name='brand' value={editData.email} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                    </div>
+                    <div>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Password</label>
+                        <input name='model' value={editData.password} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                    </div>
+                    <div>
+                        <label className='block text-sm font-semibold text-gray-700 mb-1'>New password</label>
+                        <input name='ref' value={editData.newPassword} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                    </div>
+                </div>
+                <div className='flex gap-4 mt-8'>
+                    <button onClick={handleSave} className='bg-green-600 text-white px-5 py-2 rounded text-sm mt-1 hover:bg-green-700'>Save</button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export { User, UserOrder, UserUpdate };

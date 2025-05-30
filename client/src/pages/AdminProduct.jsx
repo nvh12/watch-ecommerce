@@ -182,12 +182,12 @@ function ManageProduct() {
         } catch (error) {
             console.error('Failed to fetch:', error);
         }
-    }
+    };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
         setEditData({ ...editData, [name]: value });
-    }
+    };
 
     const handleSave = async () => {
         try {
@@ -205,7 +205,7 @@ function ManageProduct() {
             console.error('Failed to update:', error);
         }
         setEditing(false);
-    }
+    };
 
     const handleImageUrlChange = (index, newValue) => {
         const updatedUrls = [...editData.image_url];

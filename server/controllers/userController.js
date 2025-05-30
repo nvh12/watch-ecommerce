@@ -66,8 +66,29 @@ async function singleOrder(req, res) {
     }
 }
 
+async function updateUser(req, res) {
+    try {
+        const updateData = req.body;
+        const token = req.cookies.accessToken;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userObject = await userServices.getUserByObjectId(decoded.id);
+        if (!userObject) return res.status(404).json({ message: 'User not found' });
+        const isMatch = await userObject.comparePassword(updateData.password);
+        if (!isMatch) return res.status(400).json({ message: "Invalid credentials!" });
+        const { password, newPassword, ...rest } =  updateData;
+        const data = { ...rest };
+        if (newPassword) data.password = newPassword;
+        const updatedUser = await userServices.updateUser(decoded.id, data);
+        const { password: _, ...user } = updatedUser.toObject();
+        res.status(200).json({ data: user, status: 'success' });
+    } catch (error) {
+        res.status(500).json({ status: 'error', error: error.message || 'Something went wrong' });
+    }
+}
+
 module.exports = {
     user,
     userOrders,
-    singleOrder
+    singleOrder,
+    updateUser
 };

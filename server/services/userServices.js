@@ -23,15 +23,8 @@ async function getUserById(id) {
 
 async function updateUser(id, updateData) {
     try {
-        return await User.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
-    } catch (error) {
-        throw error;
-    }
-}
-
-async function deleteUser(id) {
-    try {
-        return await User.findByIdAndDelete(id);
+        const objectId = new mongoose.Types.ObjectId(`${id}`);
+        return await User.findByIdAndUpdate(objectId, updateData, { new: true, runValidators: true });
     } catch (error) {
         throw error;
     }
@@ -40,6 +33,5 @@ async function deleteUser(id) {
 module.exports = {
     getUserByObjectId,
     getUserById,
-    updateUser,
-    deleteUser
+    updateUser
 }
