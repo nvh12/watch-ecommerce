@@ -92,6 +92,9 @@ function User() {
                         <p>{totalOrders}</p>
                     </div>
                 </div>
+                <button onClick={() => navigate('/user/update')} className='bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm mt-1 hover:bg-gray-300 transition-colors'>
+                    Edit
+                </button>
             </div>
             <div>
                 <h2 className='text-xl font-semibold text-gray-800 mb-4'>Orders</h2>
@@ -178,7 +181,7 @@ function UserOrder() {
                 Order
             </h2>
             <div className='bg-neutral-50 rounded-xl shadow-sm p-4 sm:p-6 mb-7'>
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">Order info</h2>
+                <h2 className='text-xl font-semibold text-gray-800 mb-4'>Order info</h2>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm sm:text-base text-gray-700 mb-6'>
                     <div>
                         <p className='text-gray-500 font-medium'>Order ID</p>
@@ -256,7 +259,7 @@ function UserUpdate() {
     const [editData, setEditData] = useState({});
     const [userData, setUserData] = useState({});
     const navigate = useNavigate();
-    const { user, loading } = useAuth();
+    const { user, loading, setUser } = useAuth();
 
     const fetchUser = async () => {
         try {
@@ -326,15 +329,15 @@ function UserUpdate() {
                     </div>
                     <div>
                         <label className='block text-sm font-semibold text-gray-700 mb-1'>Email</label>
-                        <input name='brand' value={editData.email} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                        <input name='email' value={editData.email} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                     </div>
                     <div>
                         <label className='block text-sm font-semibold text-gray-700 mb-1'>Password</label>
-                        <input name='model' value={editData.password} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                        <input name='password' type='password' value={editData.password} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                     </div>
                     <div>
                         <label className='block text-sm font-semibold text-gray-700 mb-1'>New password</label>
-                        <input name='ref' value={editData.newPassword} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                        <input name='newPassword' type='password' value={editData.newPassword} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                     </div>
                 </div>
                 <div className='flex gap-4 mt-8'>
@@ -342,7 +345,7 @@ function UserUpdate() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export { User, UserOrder, UserUpdate };

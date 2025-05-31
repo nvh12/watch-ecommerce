@@ -24,7 +24,7 @@ async function getUserById(id) {
 async function updateUser(id, updateData) {
     try {
         const objectId = new mongoose.Types.ObjectId(`${id}`);
-        return await User.findByIdAndUpdate(objectId, updateData, { new: true, runValidators: true });
+        return await User.findOneAndUpdate(objectId, updateData, { new: true, runValidators: true });
     } catch (error) {
         throw error;
     }

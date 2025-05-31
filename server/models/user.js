@@ -43,7 +43,7 @@ userSchema.pre('save', async function (next) {
     }
 });
 
-userSchema.pre('findByIdAndUpdate', async function (next) {
+userSchema.pre('findOneAndUpdate', async function (next) {
     const update = this.getUpdate();
     if (!update) return next();
     const password = update.password;
