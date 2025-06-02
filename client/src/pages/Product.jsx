@@ -3,11 +3,13 @@ import { useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import ImageGallery from '../components/ImageGallery';
+import Showcase from '../components/Showcase';
 
 function Product() {
     const { addItem } = useCart();
     const { user } = useAuth();
     const [watch, setWatch] = useState(null);
+    const [recommendations, setRecommendations] = useState([]);
     const [loading, setLoading] = useState(true);
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
     const { id } = useParams();
@@ -42,6 +44,14 @@ function Product() {
             })
             .catch(error => console.error('Fetch failed:', error))
             .finally(() => setLoading(false));
+        fetch(`${apiUrl}/product/${id}/recommendations`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    setRecommendations(data.recommendations);
+                }
+            })
+            .catch(error => console.error('Fetch failed:', error))
     }, [id]);
     if (loading) {
         return <div className='text-center py-10 text-xl'>Loading...</div>;
@@ -87,6 +97,12 @@ function Product() {
             <div className='mt-8 bg-white shadow-md rounded-xl p-6'>
                 <h2 className='text-xl font-semibold mb-2'>Description</h2>
                 <p>{watch.description}</p>
+            </div>
+            <div className='my-12'>
+                <h1 className='text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800 mb-2 ml-2 sm:ml-4'>
+                    Similar products
+                </h1>
+                <Showcase watches={recommendations} padding={0} />
             </div>
         </div>
     )

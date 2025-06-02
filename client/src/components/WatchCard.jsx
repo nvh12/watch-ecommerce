@@ -19,26 +19,26 @@ function WatchCard({ watch, navigate }) {
                     className='w-full h-48 object-cover rounded-md'
                     onError={handleImg}
                 />
-                <h3 className='text-md font-semibold mt-2 line-clamp'>{watch.name}</h3>
+                <h3 className='text-sm font-semibold mt-2 line-clamp'>{watch.name}</h3>
             </div>
             <div className='flex flex-col'>
-                <p className='text-gray-500 text-sm'>Brand: {watch.brand}</p>
+                <p className='text-gray-500 text-xs'>Brand: {watch.brand}</p>
                 {watch.discount > 0 ? (
                     <>
-                        <p className='text-gray-500 line-through min-h-[1.25rem]'>${watch.price.toFixed(2)}</p>
-                        <p className='text-green-600 font-semibold'>
+                        <p className='text-gray-500 line-through text-xs min-h-[1.25rem]'>${watch.price.toFixed(2)}</p>
+                        <p className='text-green-600 font-semibold text-sm'>
                             ${(watch.price * (1 - watch.discount / 100)).toFixed(2)}
-                            <span className='ml-1 text-xs text-red-500'>({watch.discount}% off)</span>
+                            <span className='ml-1 text-[10px] text-red-500'>({watch.discount}% off)</span>
                         </p>
                     </>
                 ) : (
                     <>
-                        <p className='text-gray-500 line-through min-h-[1.25rem]'></p>
-                        <p className='text-green-600 font-semibold'>${watch.price.toFixed(2)}</p>
+                        <p className='text-gray-500 line-through text-xs min-h-[1.25rem]'></p>
+                        <p className='text-green-600 font-semibold text-sm'>${watch.price.toFixed(2)}</p>
                     </>
                 )}
                 <button onClick={() => navigate(`/product/${watch.watch_id}`)}
-                    className='bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm mt-1 hover:bg-gray-300 transition-colors'>
+                    className='bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs mt-1 hover:bg-gray-300 transition-colors'>
                     View Details
                 </button>
             </div>
