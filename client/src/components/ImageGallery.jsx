@@ -34,11 +34,13 @@ function ImageGallery({ imageURLs = [], name }) {
 
     return (
         <div className='flex flex-col items-center'>
-            <img
-                src={validImages[index]}
-                alt={name}
-                className='w-64 lg:w-72 h-auto object-cover rounded'
-            />
+            <div className='relative w-60 aspect-[3/4] bg-white rounded overflow-hidden'>
+                <img
+                    src={validImages[index]}
+                    alt={name}
+                    className='absolute inset-0 w-full h-full object-contain rounded'
+                />
+            </div>
             {validImages.length > 1 && (
                 <div className='mt-2 flex gap-3'>
                     <button onClick={handlePrev}

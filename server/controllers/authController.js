@@ -3,16 +3,23 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const cartServices = require('../services/cartServices');
+const userServices = require('../services/userServices');
+const emailUtil = require('../utils/email');
 
 const ACCESS_SECRET = process.env.JWT_SECRET;
 const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
+const RESET_SECRET = process.env.JWT_RESET_SECRET;
 
 function generateAccessToken(id) {
     return jwt.sign({ id }, ACCESS_SECRET, { expiresIn: '15m' });
 }
 
 function generateRefreshToken(id) {
-    return jwt.sign({ id }, REFRESH_SECRET, { expiresIn: '1h' })
+    return jwt.sign({ id }, REFRESH_SECRET, { expiresIn: '1h' });
+}
+
+function generateResetToken(id) {
+    return jwt.sign({ id }, RESET_SECRET, { expiresIn: '15m' });
 }
 
 async function register(req, res) {
@@ -64,8 +71,8 @@ async function login(req, res) {
                 role: user.role
             }
         });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 }
 
@@ -83,7 +90,7 @@ function refresh(req, res) {
             refreshed: true,
             message: 'Token refreshed successfully'
         });
-    } catch (err) {
+    } catch (error) {
         res.status(403).json({
             refreshed: false,
             message: 'Invalid or expired refresh token'
@@ -102,7 +109,7 @@ async function status(req, res) {
     if (!token) return res.status(200).json({ authenticated: false });
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findById(decoded.id);
+        const user = await userServices.getUserByObjectId(decoded.id);
         if (!user) res.status(200).json({ authenticated: false });
         return res.status(200).json({
             authenticated: true,
@@ -118,10 +125,40 @@ async function status(req, res) {
     }
 }
 
+async function getResetCode(req, res) {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email: email });
+        if (!user) return res.status(400).json({ message: "User not found!" });
+        const resetToken = generateResetToken(user._id);
+        emailUtil.send(user.name, resetToken, email);
+        return res.status(200).json({ message: 'success'});
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+async function reset(req, res) {
+    try {
+        const { code, password } = req.body;
+        const decoded = jwt.verify(code, RESET_SECRET);
+        const userObject = await userServices.getUserByObjectId(decoded.id);
+        if (!userObject) return res.status(404).json({ message: 'User not found' });
+        userObject.password = password;
+        const updatedUser = await userServices.updateUser(decoded.id, userObject);
+        const { password: _, ...user } = updatedUser.toObject();
+        res.status(200).json({ data: user, status: 'success' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = {
     register,
     login,
     refresh,
     logout,
-    status
+    status,
+    getResetCode,
+    reset
 };

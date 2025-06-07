@@ -1,6 +1,6 @@
 const watchServices = require('../services/watchServices');
 
-async function recommend(watch) {
+async function recommend(watch, limit = 12) {
     const candidates = await watchServices.getWatchesByFilters({
         _id: { $ne: watch._id },
         sex: watch.sex,
@@ -17,7 +17,7 @@ async function recommend(watch) {
     });
     return scored
         .sort((a, b) => b.score - a.score)
-        .slice(0, 10)
+        .slice(0, limit)
         .map(i => i.watch);
 }
 

@@ -6,8 +6,7 @@ async function getCart(userId) {
     try {
         const userObjectId = new mongoose.Types.ObjectId(`${userId}`);
         const cart = await Cart.findOne({ user: userObjectId });
-        cart.updatedAt = new Date();
-        await cart.save();
+        if (cart) await cart.save();
         return await Cart.findOne({ user: userObjectId }).populate('items.product');
     } catch (error) {
         throw error;
@@ -21,6 +20,7 @@ async function addItem(item, userId) {
         let cart = await Cart.findOne({ user: userObjectId });
         if (!cart) {
             cart = new Cart({ user: userObjectId, items: [], total_price: 0 });
+            await cart.save();
         }
         const existingItem = cart.items.find((it) => it.product.equals(itemId));
         if (existingItem) {

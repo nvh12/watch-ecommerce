@@ -7,7 +7,7 @@ import Layout from './layouts/Layout';
 import Home from './pages/Home';
 import Browse from './pages/Browse';
 import Product from './pages/Product';
-import { Register, Login } from './pages/Authen';
+import { Register, Login, Reset } from './pages/Authen';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import { User, UserOrder, UserUpdate } from './pages/User';
@@ -28,6 +28,7 @@ function App() {
               <Route path='/product/:id' element={<Product />} />
               <Route path='/auth/login' element={<Login />} />
               <Route path='/auth/register' element={<Register />} />
+              <Route path='/auth/reset' element={<Reset />} />
               <Route path='/cart' element={<Cart />} />
               <Route path='/cart/checkout' element={<Checkout />} />
               <Route path='/user' element={<User />} />

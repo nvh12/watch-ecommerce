@@ -12,13 +12,21 @@ const cartSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 cartSchema.pre('save', async function (next) {
+    if (!this.items || this.items.length === 0) {
+        return next();
+    }
     const watchPromises = this.items.map(item =>
         watchServices.getWatchByObjectId(item.product)
     );
     const watches = await Promise.all(watchPromises);
-    this.items.forEach((item, index) => {
+    this.items = this.items.filter((item, index) => {
         const watch = watches[index];
-        item.price = watch.price * (1 - (watch.discount / 100));
+        if (watch) {
+            item.price = watch.price * (1 - (watch.discount / 100));
+            return true;
+        } else {
+            return false;
+        }
     });
     this.total_price = this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
     next();

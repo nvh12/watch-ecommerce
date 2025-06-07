@@ -2,9 +2,9 @@ const { getWatchesByFilters } = require('../services/watchServices');
 
 async function home(req, res) {
     try {
-        const latest = await getWatchesByFilters({}, 1, 10, 'createdAt', 'desc');
-        const bestseller = await getWatchesByFilters({}, 1, 10, 'sold', 'desc');
-        const all = await getWatchesByFilters({}, 1, 10);
+        const latest = await getWatchesByFilters({}, 1, 12, 'createdAt', 'desc');
+        const bestseller = await getWatchesByFilters({}, 1, 12, 'sold', 'desc');
+        const all = await getWatchesByFilters({}, 1, 12);
         res.status(200).json({
             latest: latest,
             bestseller: bestseller,

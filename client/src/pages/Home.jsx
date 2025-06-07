@@ -30,7 +30,7 @@ function Home() {
                 { title: 'All Watches', watches: all, link: '/browse' }
             ].map((section, idx) => (
                 <div className='my-16' key={idx}>
-                    <h1 className='text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800 mb-4 ml-2 sm:ml-4'>
+                    <h1 className='text-xl md:text-2xl font-semibold text-gray-800 mb-2 ml-2 sm:ml-4'>
                         {section.title}
                     </h1>
                     <Showcase watches={section.watches} />
