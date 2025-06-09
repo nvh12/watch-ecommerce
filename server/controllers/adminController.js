@@ -6,11 +6,16 @@ const Watch = require('../models/watch');
 
 async function addProduct(req, res) {
     try {
-        const { watch } = req.body;
+        const watch = req.body;
         const product = await watchServices.addWatch(watch);
         res.status(201).json({ status: 'success', product: product });
     } catch (error) {
-        res.status(500).json({ status: 'error', error: error.message });
+        res.status(500).json({ 
+            status: 'error', 
+            message: error.message,
+            name: error.name,
+            errors: error.errors
+        });
     }
 }
 

@@ -20,7 +20,7 @@ function mail(name, code, email) {
                 <p>You requested to recover your account. Please use the following code:</p>
                 <div style="font-size: 1.5em; font-weight: bold; margin: 10px 0;">${code}</div>
                 <p>If you didn’t request this, you can ignore this email.</p>
-                <p>Thanks,<br/>Your App Team</p>
+                <p>Thanks,<br/>Watch Store</p>
             </div>
         `
     }

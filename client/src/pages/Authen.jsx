@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { toast } from 'react-toastify';
 
 const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
@@ -39,8 +40,7 @@ function Register() {
             navigate('/');
         }
         catch (error) {
-            console.error('Error:', error);
-            alert('Failed to submit.');
+            toast(`${error}`, { autoClose: 3000 });
         }
         finally {
             setLoading(false);
@@ -104,8 +104,7 @@ function Login() {
             navigate('/');
         }
         catch (error) {
-            console.error('Error:', error);
-            alert(error);
+            toast(`${error}`, { autoClose: 3000 });
         }
         finally {
             setLoading(false);
@@ -165,9 +164,10 @@ function Reset() {
                 body: JSON.stringify({ email: formData.email })
             });
             if (res.ok) {
+                toast('Code sent!', { autoClose: 3000 });
                 setStage(2);
             } else {
-                alert('Failed to send reset code.');
+                toast('Failed to send reset code.', { autoClose: 3000});
             }
         } finally {
             setLoading(false);
@@ -192,9 +192,10 @@ function Reset() {
                 })
             });
             if (res.ok) {
+                toast(`Password reset successful`, { autoClose: 3000 });
                 navigate('/auth/login');
             } else {
-                alert('Reset failed.');
+                toast('Reset failed.', { autoClose: 3000 });
             }
         } finally {
             setLoading(false);

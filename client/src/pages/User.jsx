@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext';
 import OrderCard from '../components/OrderCard';
 
@@ -25,7 +26,7 @@ function User() {
             const result = await response.json();
             if (result.status === 'success') setUserData(result.data);
         } catch (error) {
-            console.error('Failed to fetch user:', error);
+            toast(`Error: ${error}` || 'Failed to load user', { autoClose: 3000 });
         }
     };
 
@@ -43,7 +44,7 @@ function User() {
                 setTotalCost(result.totalCost ?? 0);
             }
         } catch (error) {
-            console.error('Failed to fetch user:', error);
+            toast(`Error: ${error}` || 'Failed to load orders', { autoClose: 3000 });
         }
     };
 
@@ -163,7 +164,7 @@ function UserOrder() {
                 setOrder(result.order);
             }
         } catch (error) {
-            console.error('Fetch failed:', error);
+            toast(`Error: ${error}` || 'Failed to load order', { autoClose: 3000 });
         }
     }
 
@@ -277,7 +278,7 @@ function UserUpdate() {
                 });
             }
         } catch (error) {
-            console.error('Failed to fetch user:', error);
+            toast(`Error: ${error}` || 'Failed to load user', { autoClose: 3000 });
         }
     };
 
@@ -304,9 +305,10 @@ function UserUpdate() {
                 });
                 setUserData(result.data);
                 navigate('/user');
+                toast('Update successful!', { autoClose: 3000 })
             }
         } catch (error) {
-            console.error('Failed to update:', error);
+            toast(`Error: ${error}` || 'Update failed', { autoClose: 3000 })
         }
     };
 

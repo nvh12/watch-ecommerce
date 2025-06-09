@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaTrash } from 'react-icons/fa6';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { toast } from 'react-toastify';
 
 function Cart() {
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
@@ -25,7 +26,7 @@ function Cart() {
                     cartItems = data.data.items;
                 }
             } catch (error) {
-                console.error('Fetch failed:', error);
+                toast(`Error: ${error}` || 'Failed to load cart', { autoClose: 3000 });
             }
             try {
                 combined = cartItems.map((item) => ({
@@ -34,7 +35,7 @@ function Cart() {
                 }));
                 setItemList(combined);
             } catch (error) {
-                console.error(error);
+                toast(`Error: ${error}` || 'Failed to load cart', { autoClose: 3000 });
             }
         } else {
             cartItems = cart;
@@ -49,7 +50,7 @@ function Cart() {
                                 quantity: item.quantity
                             };
                         } else {
-                            console.error('Failed to fetch product:', item.product);
+                            toast(`Error: ${error}` || 'Failed to fetch', { autoClose: 3000 });
                             return null;
                         }
                     })
@@ -77,7 +78,7 @@ function Cart() {
             });
             const result = await response.json();
             if (result.status !== 'success') {
-                console.error('Add to cart failed:', result.message);
+                toast('Failed to add', { autoClose: 3000 });
             }
         } else {
             addItem({ product: itemId, price: price });
@@ -98,7 +99,7 @@ function Cart() {
             });
             const result = await response.json();
             if (result.status !== 'success') {
-                console.error('Add to cart failed:', result.message);
+                toast('Failed to reduce', { autoClose: 3000 });
             }
         } else {
             reduceItem({ product: itemId, price: price });
@@ -119,7 +120,7 @@ function Cart() {
             });
             const result = await response.json();
             if (result.status !== 'success') {
-                console.error('Add to cart failed:', result.message);
+                toast('Failed to delete', { autoClose: 3000 });
             }
         } else {
             removeItem({ product: itemId, price: price });

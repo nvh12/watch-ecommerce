@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext';
 
 const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
@@ -17,7 +18,7 @@ function Admin() {
             const result = await response.json();
             if (result.status === 'success') setUserData(result.data);
         } catch (error) {
-            console.error('Failed to fetch user:', error);
+            toast(`Error: ${error}` || 'Failed to load user', { autoClose: 3000 });
         }
     }
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import Showcase from '../components/Showcase';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,7 +20,7 @@ function Home() {
                     setAll(data.all);
                 }
             })
-            .catch(error => console.error('Fetch failed:', error));
+            .catch(() => toast('Failed to load', { autoClose: 3000 }));
     }, []);
 
     return (

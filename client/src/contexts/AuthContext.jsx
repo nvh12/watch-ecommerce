@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useCart } from '../contexts/CartContext';
 
 const AuthContext = createContext();
@@ -19,7 +20,7 @@ export const AuthProvider = ({ children }) => {
         });
         const result = await response.json();
         if (response.ok) {
-            alert(result.message);
+            toast('Register successful!', { autoClose: 3000 });
         } else {
             throw new Error(result.message || 'Registration failed');
         }
@@ -40,6 +41,7 @@ export const AuthProvider = ({ children }) => {
             setUser(result.curUser);
             clearCart();
             localStorage.removeItem('cart');
+            toast('Login successful!', { autoClose: 3000 });
         } else {
             throw new Error(result.message || 'Login failed');
         }
@@ -84,7 +86,8 @@ export const AuthProvider = ({ children }) => {
         fetch(`${apiUrl}/auth/logout`, {
             method: 'POST',
             credentials: 'include'
-        })
+        });
+        toast('Logout successful!', { autoClose: 3000 });
     }
 
     useEffect(() => {

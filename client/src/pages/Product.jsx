@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import ImageGallery from '../components/ImageGallery';
@@ -27,7 +28,7 @@ function Product() {
             });
             const result = await response.json();
             if (result.status !== 'success') {
-                console.error('Add to cart failed:', result.message);
+                toast('Failed to add to cart', { autoClose: 3000 });
             }
         } else {
             addItem({ product: id, price: price });
@@ -42,7 +43,7 @@ function Product() {
                     setWatch(data.watch);
                 }
             })
-            .catch(error => console.error('Fetch failed:', error))
+            .catch(() => toast('Failed to load', { autoClose: 3000 }))
             .finally(() => setLoading(false));
         fetch(`${apiUrl}/product/${id}/recommendations`)
             .then(response => response.json())

@@ -24,7 +24,6 @@ userSchema.pre('save', async function (next) {
                 { $inc: { value: 1 } },
                 { new: true, upsert: true }
             );
-
             if (!counter || !counter.value) {
                 throw new Error('Counter was not properly incremented.');
             }

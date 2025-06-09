@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext';
 
 function Checkout() {
@@ -28,7 +29,7 @@ function Checkout() {
                     cartItems = data.data.items;
                 }
             } catch (error) {
-                console.error('Fetch failed:', error);
+                toast('Failed to load', { autoClose: 3000 });
             }
         } else {
             cartItems = cart;
@@ -42,7 +43,7 @@ function Checkout() {
             let newTotal = combined.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
             setTotal(newTotal);
         } catch (error) {
-            console.error(error);
+            toast('Failed to load', { autoClose: 3000 });
         }
     };
 
@@ -60,7 +61,7 @@ function Checkout() {
         });
         const result = await response.json();
         if (response.ok) {
-            alert(result.message);
+            toast('Check out successful!', { autoClose: 3000 });
         } else {
             throw new Error(result.error);
         }
@@ -76,11 +77,11 @@ function Checkout() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!formData.payment || !formData.delivery) {
-            alert('Please fill in all fields.');
+            toast('Please fill in all fields.', { autoClose: 3000 });
             return;
         }
         if (ordered) {
-            alert('Order already placed.');
+            toast('Order already placed.', { autoClose: 3000 });
             return;
         }
         try {

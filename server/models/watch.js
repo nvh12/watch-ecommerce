@@ -19,7 +19,7 @@ const watchSchema = new mongoose.Schema({
     description: { type: String, default: 'Description' }
 }, { timestamps: true });
 
-watchSchema.pre('save', async function (next) {
+watchSchema.pre('validate', async function (next) {
     if (!this.isNew) return next();
     try {
         const counter = await Counter.findOneAndUpdate(

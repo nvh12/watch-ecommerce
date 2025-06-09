@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext';
 import OrderCard from '../components/OrderCard';
 
@@ -31,7 +32,7 @@ function OrderList() {
             }
             const res = await fetch(`${apiUrl}/`)
         } catch (error) {
-            console.error('Failed to fetch:', error);
+            toast(`Error: ${error}` || 'Failed to load orders', { autoClose: 3000 })
         }
     }
 
@@ -118,7 +119,7 @@ function ManageOrder() {
                 setEditData(result.order);
             }
         } catch (error) {
-            console.error('Failed to fetch:', error);
+            toast(`Error: ${error}` || 'Failed to load orders', { autoClose: 3000 });
         }
     }
 
@@ -146,10 +147,11 @@ function ManageOrder() {
             });
             const result = await response.json();
             if (result.status === 'success') {
+                toast('Order updated!', { autoClose: 3000 })
                 setOrder(result.order);
             }
         } catch (error) {
-            console.error('Failed to update:', error);
+            toast('Update failed', { autoClose: 3000 });
         }
         setEditing(false);
     }

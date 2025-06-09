@@ -1,7 +1,9 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { nanoid } = require('nanoid');
 const User = require('../models/user');
+const Token = require('../models/token');
 const cartServices = require('../services/cartServices');
 const userServices = require('../services/userServices');
 const emailUtil = require('../utils/email');
@@ -18,8 +20,11 @@ function generateRefreshToken(id) {
     return jwt.sign({ id }, REFRESH_SECRET, { expiresIn: '1h' });
 }
 
-function generateResetToken(id) {
-    return jwt.sign({ id }, RESET_SECRET, { expiresIn: '15m' });
+async function generateResetToken(id) {
+    const token = nanoid(8);
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+    await Token.create({ user: id, value: token, expiresAt });
+    return token;
 }
 
 async function register(req, res) {
@@ -130,7 +135,7 @@ async function getResetCode(req, res) {
         const { email } = req.body;
         const user = await User.findOne({ email: email });
         if (!user) return res.status(400).json({ message: "User not found!" });
-        const resetToken = generateResetToken(user._id);
+        const resetToken = await generateResetToken(user._id);
         emailUtil.send(user.name, resetToken, email);
         return res.status(200).json({ message: 'success'});
     } catch (error) {
@@ -141,11 +146,12 @@ async function getResetCode(req, res) {
 async function reset(req, res) {
     try {
         const { code, password } = req.body;
-        const decoded = jwt.verify(code, RESET_SECRET);
-        const userObject = await userServices.getUserByObjectId(decoded.id);
+        const token = await Token.findOne({ value: code });
+        if (!token) return res.status(401).json({ message: 'Invalid token' });
+        const userObject = await userServices.getUserByObjectId(token.user);
         if (!userObject) return res.status(404).json({ message: 'User not found' });
         userObject.password = password;
-        const updatedUser = await userServices.updateUser(decoded.id, userObject);
+        const updatedUser = await userServices.updateUser(token.user, userObject);
         const { password: _, ...user } = updatedUser.toObject();
         res.status(200).json({ data: user, status: 'success' });
     } catch (error) {

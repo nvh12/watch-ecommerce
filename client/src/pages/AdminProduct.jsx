@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { FaTrash, FaMagnifyingGlass } from 'react-icons/fa6';
 import { useAuth } from '../contexts/AuthContext';
 import ImageGallery from '../components/ImageGallery';
@@ -29,7 +30,7 @@ function ProductList() {
             const data = await res.json();
             setWatchNumber(data.number);
         } catch (error) {
-            console.error('Failed to fetch:', error);
+            toast(`Error: ${error}` || 'Failed to load products', { autoClose: 3000 })
         }
     };
 
@@ -45,7 +46,7 @@ function ProductList() {
                 setWatchNumber(result.totalWatches);
             }
         } catch (error) {
-            console.error('Failed to fetch:', error);
+            toast(`Error: ${error}` || 'Failed to load products', { autoClose: 3000 })
         }
     }
 
@@ -180,7 +181,7 @@ function ManageProduct() {
                 setEditData(result.watch);
             }
         } catch (error) {
-            console.error('Failed to fetch:', error);
+            toast(`Error: ${error}` || 'Failed to load product', { autoClose: 3000 })
         }
     };
 
@@ -201,8 +202,9 @@ function ManageProduct() {
             if (result.status === 'success') {
                 setWatch(result.watch);
             }
+            toast('Update successful!', { autoClose: 3000 });
         } catch (error) {
-            console.error('Failed to update:', error);
+            toast(`Error: ${error}` || 'Update failed!', { autoClose: 3000 });
         }
         setEditing(false);
     };
@@ -235,8 +237,9 @@ function ManageProduct() {
             if (result.status === 'success') {
                 navigate('/admin/product');
             }
+            toast('Delete successful!', { autoClose: 3000 });
         } catch (error) {
-            console.error('Failed to update:', error);
+            toast(`Error: ${error}` || 'Update failed!', { autoClose: 3000 });
         }
     };
 
@@ -397,7 +400,7 @@ function CreateProduct() {
         sold: '',
         sex: 'Men',
         image_url: [],
-        description: '',
+        description: ''
     });
 
 
@@ -408,20 +411,27 @@ function CreateProduct() {
 
     const handleSave = async () => {
         try {
+            const sanitizedData = {
+                ...editData,
+                price: Number(editData.price),
+                stock: Number(editData.stock),
+                sold: Number(editData.sold),
+                image_url: editData.image_url || [],
+            };
             const response = await fetch(`${apiUrl}/admin/product`, {
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 method: 'POST',
-                body: JSON.stringify(editData)
+                body: JSON.stringify(sanitizedData)
             });
             const result = await response.json();
             if (result.status === 'success') {
-                setWatch(result.watch);
+                toast('Product added!', { autoClose: 3000 });
+                navigate('/admin/product');
             }
         } catch (error) {
-            console.error('Failed to update:', error);
+            toast(`Error: ${error}` || 'Failed to add product', { autoClose: 3000 });
         }
-        navigate('/admin/product');
     }
 
     const handleImageUrlChange = (index, newValue) => {

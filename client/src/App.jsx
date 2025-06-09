@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import { CartProvider } from './contexts/CartContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -42,6 +43,7 @@ function App() {
               <Route path='/admin/order/:id' element={<ManageOrder />} />
             </Routes>
           </Layout>
+          <ToastContainer/>
         </BrowserRouter>
       </AuthProvider>
     </CartProvider>
