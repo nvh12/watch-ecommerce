@@ -43,6 +43,14 @@ async function getWatchesByFilters(filters, page = 1, limit = 30, sortBy = null,
     }
 }
 
+async function countWatches(filters) {
+    try {
+        return await Watch.countDocuments(filters);
+    } catch (error) {
+        throw error;
+    }
+}
+
 async function getWatchNumber() {
     try {
         return await Watch.countDocuments({});
@@ -93,6 +101,7 @@ module.exports = {
     getWatchById,
     getWatchesByName,
     getWatchesByFilters,
+    countWatches,
     getWatchNumber,
     addWatch,
     updateWatch,

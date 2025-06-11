@@ -271,6 +271,7 @@ function ManageProduct() {
                                 <p key={index}>{url}</p>
                             ))}
                             <p><span className='font-semibold'>Price:</span> ${watch.price}</p>
+                            <p><span className='font-semibold'>Discount:</span> {watch.discount}%</p>
                             <p><span className='font-semibold'>Stock:</span> {watch.stock}</p>
                             <p><span className='font-semibold'>Sold:</span> {watch.sold}</p>
                             <p><span className='font-semibold'>Sex:</span> {watch.sex}</p>
@@ -323,6 +324,10 @@ function ManageProduct() {
                         <div>
                             <label className='block text-sm font-semibold text-gray-700 mb-1'>Price ($)</label>
                             <input name='price' type='number' value={editData.price} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
+                        </div>
+                        <div>
+                            <label className='block text-sm font-semibold text-gray-700 mb-1'>Discount ($)</label>
+                            <input name='discount' type='number' value={editData.discount} onChange={handleChange} className='w-full p-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-400 transition' />
                         </div>
                         <div>
                             <label className='block text-sm font-semibold text-gray-700 mb-1'>Stock</label>

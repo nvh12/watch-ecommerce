@@ -34,13 +34,15 @@ async function getOrdersByUser(userId, page = 1, limit = 20, sortBy = null, orde
         if (sortBy) {
             sortOption[sortBy] = order === 'asc' ? 1 : -1;
         } else {
-            sortOption['createdAt'] = -1;
+            sortOption['createdAt'] = order === 'asc' ? 1 : -1;
         }
         const id = new mongoose.Types.ObjectId(`${userId}`);
         return await Order.find({ user: id })
             .sort(sortOption)
             .skip((page - 1) * limit)
-            .limit(limit);
+            .limit(limit)
+            .populate('items.product')
+            .lean();
     } catch (error) {
         throw error;
     }

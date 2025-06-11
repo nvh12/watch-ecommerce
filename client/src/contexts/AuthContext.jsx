@@ -65,18 +65,29 @@ export const AuthProvider = ({ children }) => {
             });
     }
 
-    const refresh = () => {
-        fetch(`${apiUrl}/auth/refresh`, {
-            method: 'POST',
-            credentials: 'include'
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (!data.refreshed) logout();
-            })
-            .catch(() => {
+    const refresh = async (retry = true) => {
+        try {
+            const response = await fetch(`${apiUrl}/auth/refresh`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+            const result = await response.json();
+            if (response.ok && result.refreshed) return;
+            if (!response.ok) {
+                if (result.refreshed === false) {
+                    logout();
+                } else if (retry) {
+                    console.warn('Refresh failed, will retry later');
+                    setTimeout(() => refresh(false), 2000);
+                }
+                return;
+            }
+            if (!result.refreshed) {
                 logout();
-            })
+            }
+        } catch (error) {
+            console.warn('Refresh failed:', error.message);
+        }
     }
 
     const logout = () => {
@@ -94,7 +105,7 @@ export const AuthProvider = ({ children }) => {
         status();
         const interval = setInterval(() => {
             refresh();
-        }, 1000 * 60 * 5);
+        }, 1000 * 60 * 10);
         return () => clearInterval(interval);
     }, []);
 

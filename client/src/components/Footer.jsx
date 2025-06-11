@@ -1,4 +1,3 @@
-
 function Footer() {
     return ( 
         <footer className='custom-gray text-white py-6'>
