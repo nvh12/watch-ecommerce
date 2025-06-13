@@ -16,7 +16,7 @@ const cartRoutes = require('./routes/cartRoutes');
 const app = express();
 
 app.use(cors({
-    origin: ['http://localhost:5173', process.env.FRONT_URI],
+    origin: process.env.FRONT_URI,
     credentials: true
 }));
 
@@ -25,7 +25,10 @@ app.use(cookieParser());
 
 connectDB();
 
-app.options('*', cors());
+app.options('*', cors({
+    origin: process.env.FRONT_URI,
+    credentials: true
+}));
 
 app.use('/', homeRoutes);
 app.use('/browse', browseRoutes);
