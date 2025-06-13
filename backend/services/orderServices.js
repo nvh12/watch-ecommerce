@@ -64,17 +64,17 @@ async function getOrderNumber(userId = '') {
 async function getTotalCost(userId = '') {
     try {
         let result;
+        const matchStage = {
+            status: { $ne: 'cancelled' }
+        };
         if (userId) {
             const id = new mongoose.Types.ObjectId(userId);
-            result = await Order.aggregate([
-                { $match: { user: id } },
-                { $group: { _id: null, totalCost: { $sum: '$total_price' } } }
-            ]);
-        } else {
-            result = await Order.aggregate([
-                { $group: { _id: null, totalCost: { $sum: '$total_price' } } }
-            ]);
+            matchStage.user = id;
         }
+        result = await Order.aggregate([
+            { $match: matchStage },
+            { $group: { _id: null, totalCost: { $sum: '$total_price' } } }
+        ]); 
         return result.length > 0 ? result[0].totalCost : 0;
     } catch (error) {
         throw error;

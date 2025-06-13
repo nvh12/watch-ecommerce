@@ -29,6 +29,8 @@ function Product() {
             const result = await response.json();
             if (result.status !== 'success') {
                 toast('Failed to add to cart', { autoClose: 3000 });
+            } else {
+                toast('Added to cart', { autoClose: 3000 });
             }
         } else {
             addItem({ product: id, price: price });

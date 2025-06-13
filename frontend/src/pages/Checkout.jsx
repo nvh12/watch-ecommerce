@@ -155,7 +155,7 @@ function Checkout() {
                         <div>
                             <p className='text-sm text-gray-600 mt-2'>QR for transfer payment</p>
                             <img
-                                src='/images/qr-placeholder.png'
+                                src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwP1e0xvSjeFw1G8PqteP16UcCQMYKoag78Q&s'
                                 alt='QR Code'
                                 className='w-44 h-44 object-contain mt-2'
                             />
