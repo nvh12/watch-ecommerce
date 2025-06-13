@@ -25,6 +25,7 @@ app.use(cookieParser());
 
 connectDB();
 
+app.options('*', cors());
 
 app.use('/', homeRoutes);
 app.use('/browse', browseRoutes);

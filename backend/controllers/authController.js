@@ -57,11 +57,13 @@ async function login(req, res) {
         const refreshToken = generateRefreshToken(user._id);
         res.cookie('accessToken', accessToken, {
             httpOnly: true,
-            secure: false
+            secure: true,
+            sameSite: 'None'
         })
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
+            sameSite: 'None',
             maxAge: 60 * 60 * 1000
         })
         const cart = await cartServices.getCart(user._id);
@@ -95,7 +97,8 @@ function refresh(req, res) {
         const accessToken = generateAccessToken(user.id);
         res.cookie('accessToken', accessToken, {
             httpOnly: true,
-            secure: false
+            secure: true,
+            sameSite: 'None'
         })
         res.status(200).json({
             refreshed: true,
