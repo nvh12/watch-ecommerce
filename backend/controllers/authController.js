@@ -21,7 +21,13 @@ function generateRefreshToken(id) {
 }
 
 async function generateResetToken(id) {
-    const token = nanoid(8);
+    let token;
+    let tokenExists = true;
+    while (tokenExists) {
+        token = nanoid(8);
+        const existing = await Token.findOne({ value: token });
+        tokenExists = !!existing;
+    }
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
     await Token.create({ user: id, value: token, expiresAt });
     return token;
@@ -137,9 +143,9 @@ async function getResetCode(req, res) {
         if (!user) return res.status(400).json({ message: "User not found!" });
         const resetToken = await generateResetToken(user._id);
         emailUtil.send(user.name, resetToken, email);
-        return res.status(200).json({ message: 'success'});
+        return res.status(200).json({ message: 'success' });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ message: 'failure' });
     }
 }
 
