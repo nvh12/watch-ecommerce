@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/database');
@@ -15,7 +16,7 @@ const cartRoutes = require('./routes/cartRoutes');
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', process.env.FRONT_URI],
     credentials: true
 }));
 
